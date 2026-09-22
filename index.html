@@ -135,7 +135,8 @@ button{font:inherit; color:inherit; cursor:pointer; background:none; border:none
   letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:999px;
   border:1px solid currentColor; margin-left:5px; vertical-align:1px;
 }
-.s-moderate{color:#6E8A72} .s-thin{color:#B07A3B} .s-to-confirm{color:#B07A3B}
+.s-moderate{color:#6E8A72} .s-thin{color:#B07A3B}
+.s-to-confirm{color:#B07A3B} .s-single-source{color:#6E8A72}
 .pquote{
   font-family:"Newsreader",Georgia,serif; font-size:16px; line-height:1.45;
   font-style:italic; color:var(--ink); margin-bottom:2px;
@@ -365,6 +366,15 @@ button{font:inherit; color:inherit; cursor:pointer; background:none; border:none
           Select one to light up their route through the system.
         </p>
       </div>
+
+      <div class="grp">
+        <div class="grp-h">Documentation</div>
+        <div class="list">
+          <button id="appendixBtn" type="button" aria-pressed="false">
+            <span class="tag">§</span><span>Research appendix<br><span style="color:var(--ink-3);font-size:11px">Methods and evidence index</span></span>
+          </button>
+        </div>
+      </div>
     </aside>
 
     <main class="stage">
@@ -566,79 +576,79 @@ const HALOS = [
    ==========================================================================*/
 const ACTORS = [
   // ---- finding out ----
-  {id:"website",     label:"Website",         type:"channel", ico:"browser", x:255, y:110, status:"both",     time:"all",
+  {id:"website",     label:"Website",         type:"channel", ico:"browser", x:255, y:110, status:"both",     time:"all", touch:"The shop authors this one. It is the only channel it fully controls.",
    desc:"Carries the tagline and one set of hours, but no menu and no changeover time.", ev:["SR-W01","SR-W02","SR-W04"]},
-  {id:"atlcoffee",   label:"ATL Coffeeshops", type:"channel", ico:"guide",   x:450, y:165, status:"both",     time:"all",
+  {id:"atlcoffee",   label:"ATL Coffeeshops", type:"channel", ico:"guide",   x:450, y:165, status:"both",     time:"all", touch:"No direct contact; the shop's cocktail menu reaches people only through this guide.",
    desc:"A third-party guide, and the only place the cocktail menu is published.", ev:["SR-A01","SR-A02","SR-A03","SR-A04"]},
-  {id:"chowbus",     label:"Chowbus",         type:"channel", ico:"phone",   x:190, y:215, status:"both",     time:"all",
+  {id:"chowbus",     label:"Chowbus",         type:"channel", ico:"phone",   x:190, y:215, status:"both",     time:"all", touch:"Ordering is outsourced here. The shop touches the customer through a third party's interface.",
    desc:"The shop's outsourced ordering path. Pickup only, and coffee only.", ev:["SR-O01","SR-O02","SR-O03","SR-O04"]},
-  {id:"joecoffee",   label:"joe.coffee",      type:"channel", ico:"star",    x:375, y:290, status:"both",     time:"all",
+  {id:"joecoffee",   label:"joe.coffee",      type:"channel", ico:"star",    x:375, y:290, status:"both",     time:"all", touch:"No contact. The shop cannot correct what this page says about it.",
    desc:"Aggregated reviews, 4.3 from 80. Publishes a third set of hours and denies that mobile ordering exists.", ev:["SR-J01","SR-J02","SR-J03"]},
-  {id:"yelp",        label:"Yelp",            type:"channel", ico:"star",    x:500, y:275, status:"both",     time:"all",
+  {id:"yelp",        label:"Yelp",            type:"channel", ico:"star",    x:500, y:275, status:"both",     time:"all", touch:"No contact. Category and city are set by the platform, not the shop.",
    desc:"Files the shop under Cocktail Bars, in the wrong city, with an unverified ranking.", ev:["SR-Y01","SR-Y02"]},
-  {id:"instagram",   label:"Instagram",       type:"channel", ico:"camera",  x:300, y:375, status:"observed", time:"all",
+  {id:"instagram",   label:"Instagram",       type:"channel", ico:"camera",  x:300, y:375, status:"observed", time:"all", touch:"No managed contact; the room itself is the touchpoint being shared.",
    desc:"Not a channel the team studied directly, but reviewers name the look as the reason they came.", ev:["SR-J07"]},
-  {id:"wordofmouth", label:"Word of mouth",   type:"channel", ico:"speech",  x:165, y:335, status:"observed", time:"all",
+  {id:"wordofmouth", label:"Word of mouth",   type:"channel", ico:"speech",  x:165, y:335, status:"observed", time:"all", touch:"No touchpoint at all. The service reaches this channel only through past visits.",
    desc:"How the one interviewed customer actually found the shop. It appears on no channel the shop controls.", ev:["C1-CQ01"]},
 
   // ---- who comes in ----
-  {id:"cust-daytime",  label:"Daytime regular", type:"customer", ico:"person",   x:215, y:545, status:"both",     time:"day",
+  {id:"cust-daytime",  label:"Daytime regular", type:"customer", ico:"person",   x:215, y:545, status:"both",     time:"day", touch:"Counter, seating, the kiosk, and the shouted call-out.",
    desc:"Weekly, alone, there to work, read or relax. Finds the service legible and works around the queue without being asked to.",
    ev:["C1-CQ01","C1-CQ03","C1-CQ05","C1-CQ06","C1-CQ11","C1-CQ12"]},
-  {id:"cust-evening",  label:"Evening group",   type:"customer", ico:"group",    x:150, y:680, status:"observed", time:"evening",
+  {id:"cust-evening",  label:"Evening group",   type:"customer", ico:"group",    x:150, y:680, status:"observed", time:"evening", touch:"Counter, seating, the table lights, and whatever staff explain on request.",
    desc:"Arrives with friends after 6 PM. Needs seating help, and has to ask what is being served. No evening customer has been interviewed — this actor rests on observation alone.",
    ev:["OB01-E3","OB01-E4","OB01-E5"]},
-  {id:"cust-firsttime",label:"First-timer",     type:"customer", ico:"newcomer", x:270, y:760, status:"both",     time:"all",
+  {id:"cust-firsttime",label:"First-timer",     type:"customer", ico:"newcomer", x:270, y:760, status:"both",     time:"all", touch:"Published channels and the unlit frontage — all before any staff contact.",
    desc:"Meets the shop through four channels that disagree, and an unlit frontage.", ev:["SR-J07","SR-J08","SR-Y01"]},
 
   // ---- the room ----
-  {id:"counter",      label:"Counter",       type:"artifact", ico:"counter",   x:490, y:540, status:"both",     time:"all",
+  {id:"counter",      label:"Counter",       type:"artifact", ico:"counter",   x:490, y:540, status:"both",     time:"all", touch:"The primary touchpoint. Ordering and pickup share one surface.",
    desc:"Order point and pickup point in one. Every exchange between customer and staff passes through it.", ev:["OB01-E1","OB01-E5"]},
-  {id:"kiosk",        label:"Kiosk",         type:"artifact", ico:"kiosk",     x:420, y:640, status:"observed", time:"all",
+  {id:"kiosk",        label:"Kiosk",         type:"artifact", ico:"kiosk",     x:420, y:640, status:"observed", time:"all", touch:"A touchpoint the shop never announces; customers find it themselves.",
    desc:"Named by no channel, and contradicted by one. Customers use it to skip the counter line.", ev:["C1-CQ05","SR-J03"]},
-  {id:"callout",      label:"Shouted call-out", type:"artifact", ico:"megaphone", x:505, y:735, status:"observed", time:"day",
+  {id:"callout",      label:"Shouted call-out", type:"artifact", ico:"megaphone", x:505, y:735, status:"observed", time:"day", touch:"The drink-ready touchpoint, delivered by voice because no device exists.",
    desc:"The drink-ready notification. There is no screen and no speaker, so staff shout and hope.", ev:["S1-SQ22","S1-SQ23","SR-J10"]},
-  {id:"seating",      label:"Seating",       type:"artifact", ico:"chair",     x:665, y:585, status:"both",     time:"all",
+  {id:"seating",      label:"Seating",       type:"artifact", ico:"chair",     x:665, y:585, status:"both",     time:"all", touch:"The dwell touchpoint, and the one staff must physically manage for groups.",
    desc:"Small tables along one wall with a single central walkway. Fits pairs; strains under groups and queues.", ev:["OB01-E1","OB01-E4","OB01-E5"]},
-  {id:"table-lights", label:"Table lights",  type:"artifact", ico:"lamp",      x:690, y:705, status:"observed", time:"evening",
+  {id:"table-lights", label:"Table lights",  type:"artifact", ico:"lamp",      x:690, y:705, status:"observed", time:"evening", touch:"The changeover touchpoint — the single signal that service has changed.",
    desc:"Small lights placed on the tables. The only signal in the entire system that coffee service has become cocktail service.", ev:["S1-SQ08","S1-SQ11","SR-W01"]},
-  {id:"center-table", label:"Alcohol store", type:"artifact", ico:"bottle",    x:700, y:480, status:"observed", time:"evening",
+  {id:"center-table", label:"Alcohol store", type:"artifact", ico:"bottle",    x:700, y:480, status:"observed", time:"evening", touch:"Back-of-house staging, visible to customers but not addressed to them.",
    desc:"The centre table, where cocktail supplies live and where staff stage them before the changeover.", ev:["S1-SQ08"]},
 
   // ---- backstage ----
-  {id:"barista-day",       label:"Barista",        type:"staff",    ico:"cup",      x:895, y:380, status:"both",     time:"day",
+  {id:"barista-day",       label:"Barista",        type:"staff",    ico:"cup",      x:895, y:380, status:"both",     time:"day", touch:"Met through the rota, five days of training, and the counter itself.",
    desc:"Four months' tenure. Opens the bar, explains the menu, clears tables, and carries the notification problem personally.",
    ev:["S1-SQ03","S1-SQ04","S1-SQ05","S1-SQ22"]},
-  {id:"kitchen",           label:"Kitchen",        type:"staff",    ico:"chefhat",  x:1065,y:330, status:"both",     time:"all",
+  {id:"kitchen",           label:"Kitchen",        type:"staff",    ico:"chefhat",  x:1065,y:330, status:"both",     time:"all", touch:"Met through printed labels and the shared counter.",
    desc:"One kitchen member on the morning shift, coordinating with the bar by voice and printed label.", ev:["S1-SQ04","S2-SQ07"]},
-  {id:"barista-crossover", label:"Crossover staff",type:"staff",    ico:"cocktail", x:920, y:510, status:"both",     time:"evening",
+  {id:"barista-crossover", label:"Crossover staff",type:"staff",    ico:"cocktail", x:920, y:510, status:"both",     time:"evening", touch:"Met through the rota; their cocktail licence is not a shop asset.",
    desc:"Ten months, prior Starbucks experience, holds a cocktail licence. The bridge between the two services is one person's credential.",
    ev:["S2-SQ03","S2-SQ04"]},
-  {id:"labels",            label:"Printed labels", type:"artifact", ico:"tag",      x:1100,y:450, status:"observed", time:"all",
+  {id:"labels",            label:"Printed labels", type:"artifact", ico:"tag",      x:1100,y:450, status:"observed", time:"all", touch:"The only written coordination artifact in the service.",
    desc:"Separate tickets for kitchen and bar. Named by staff as the only system they have.", ev:["S2-SQ07"]},
-  {id:"senior-peer",       label:"Senior peer",    type:"staff",    ico:"senior",   x:1040,y:575, status:"observed", time:"all",
+  {id:"senior-peer",       label:"Senior peer",    type:"staff",    ico:"senior",   x:1040,y:575, status:"observed", time:"all", touch:"No formal touchpoint. Escalation by seniority is unwritten.",
    desc:"Not a role on any org chart. Whoever has worked there longest is the first escalation point.", ev:["S1-SQ20"]},
-  {id:"boss",              label:"Owner",          type:"staff",    ico:"owner",    x:900, y:615, status:"both",     time:"all",
+  {id:"boss",              label:"Owner",          type:"staff",    ico:"owner",    x:900, y:615, status:"both",     time:"all", touch:"Escalation of last resort, reached by asking.",
    desc:"Decides when seniority cannot. The team had no access under Indirect Engagement, so this actor is visible only through staff accounts.",
    ev:["S1-SQ20","S2-SQ20"]},
-  {id:"tablet",            label:"Clock-out tablet",type:"artifact",ico:"tablet",   x:1120,y:570, status:"both",     time:"all",
+  {id:"tablet",            label:"Clock-out tablet",type:"artifact",ico:"tablet",   x:1120,y:570, status:"both",     time:"all", touch:"Touches staff for hours only, never for service state.",
    desc:"The only digital system in the staff workflow, and it records hours rather than service state.", ev:["S1-SQ04"]},
 
   // ---- the hub ----
-  {id:"shop",    label:"Common",  type:"org",     ico:"shop",    x:730, y:360, status:"both", time:"all", r:28,
+  {id:"shop",    label:"Common",  type:"org",     ico:"shop",    x:730, y:360, status:"both", time:"all", r:28, touch:"The organisation itself; every touchpoint below belongs to it.",
    desc:"Common Coffee & Cocktails. Independent specialty coffee shop and roaster, opened December 2025. Added a cocktail program in August 2026, making one small room serve two occasions.",
    ev:["SR-A02","SR-A03","SR-W01"]},
-  {id:"loyalty", label:"Loyalty", type:"channel", ico:"loyalty", x:860, y:250, status:"both", time:"all",
+  {id:"loyalty", label:"Loyalty", type:"channel", ico:"loyalty", x:860, y:250, status:"both", time:"all", touch:"Points are issued at the counter and redeemed for merch.",
    desc:"Points redeemable for merch. The shop's only formal retention mechanism.", ev:["SR-O04","C1-CQ12"]},
 
   // ---- institutional context (outside the clusters; out of P2 scope) ----
-  {id:"health",      label:"Health permit",   type:"institution", ico:"clipboard", x:420, y:858, status:"formal", time:"all",     r:12, labelAbove:true,
+  {id:"health",      label:"Health permit",   type:"institution", ico:"clipboard", x:420, y:858, status:"formal", time:"all",     r:12, labelAbove:true, touch:"Regulatory only — no service touchpoint.",
    desc:"Standard local food service permitting. Context only — back-office is out of the P2 scope.", ev:["SR-A02"]},
-  {id:"alcohol",     label:"Alcohol licence", type:"institution", ico:"seal",      x:580, y:858, status:"formal", time:"evening", r:12, labelAbove:true,
+  {id:"alcohol",     label:"Alcohol licence", type:"institution", ico:"seal",      x:580, y:858, status:"formal", time:"evening", r:12, labelAbove:true, touch:"Regulatory only — enabled the evening service but touches no customer.",
    desc:"Georgia on-premise consumption licensing. The regulatory change that made the evening service possible.", ev:["SR-A03","SR-Y01"]},
-  {id:"competitors", label:"Nearby cafes",    type:"institution", ico:"shops",     x:740, y:858, status:"formal", time:"day",     r:12, labelAbove:true,
+  {id:"competitors", label:"Nearby cafes",    type:"institution", ico:"shops",     x:740, y:858, status:"formal", time:"day",     r:12, labelAbove:true, touch:"No touchpoint; they compete for the same daytime visitors.",
    desc:"Postern, GULA, White Windmill, Ark, Java Saga. Reviewers already name Postern and GULA as the study-and-work spots.", ev:["SR-Y02"]},
-  {id:"roasters",    label:"Roasters",        type:"institution", ico:"beans",     x:900, y:858, status:"formal", time:"all",     r:12, labelAbove:true,
+  {id:"roasters",    label:"Roasters",        type:"institution", ico:"beans",     x:900, y:858, status:"formal", time:"all",     r:12, labelAbove:true, touch:"Supply side only, out of the P2 scope.",
    desc:"Listed as suppliers even though the shop presents itself as an independent roaster. Context only.", ev:["SR-J01","SR-A04"]}
 ];
 
@@ -794,7 +804,32 @@ const PERSONAS = [
    divergence:"Jordan meets the same changeover from the outside, deciding whether to come at all — and “checks the menu before choosing” runs straight into gap C3, where the cocktail menu exists on only one third-party site.",
    actors:["cust-evening","counter","seating","barista-day","barista-crossover","table-lights","website","atlcoffee","chowbus"],
    path:["e05","e06","e08","e16","e20","e21","e22","e27","e29","e38"],
-   ev:["OB01-E3","OB01-E4","OB01-E5","SR-A03","SR-O03","SR-W01","SR-J07"]}
+   ev:["OB01-E3","OB01-E4","OB01-E5","SR-A03","SR-O03","SR-W01","SR-J07"]},
+
+  {id:"p-sam", name:"Sam", archetype:"The Counter Barista", strength:"single source",
+   quote:"There are no screens or speakers. We shout, and hope they hear.",
+   context:"Four months at the counter, working daytime shifts. Opens the bar before service and carries the room through the weekend peak.",
+   goals:["Keep the counter moving without dropping anything.",
+          "Get every drink to the right person.",
+          "Get through a Friday-to-Sunday shift."],
+   constraints:["No system holds what anyone is working on — state lives in memory.",
+                "No screen or speaker to tell customers a drink is ready.",
+                "Weekend peaks need three people and leave no time for lunch."],
+   behaviors:["Asks a colleague before acting, to avoid missing a special request.",
+              "Shouts drink names across the room and hopes they carry.",
+              "Explains what is inside drinks with unfamiliar names.",
+              "Clears tables so the next arrivals can sit.",
+              "Places the small lights that start cocktail service."],
+   relationships:[{who:"Kitchen",what:"Coordinated by voice and printed label, with nothing written down."},
+                  {who:"Senior peer",what:"Whoever has worked there longest is the first person asked."},
+                  {who:"Owner",what:"Decides what seniority cannot settle."},
+                  {who:"Customers",what:"Depend on Sam to explain the menu and the changeover."}],
+   help:"A speaker and a screen for order notification — the change staff name themselves.",
+   evidenceBase:"Grounded in interview S1 (15 recorded responses) with support from S2 and observation OB01. Stronger evidence than the two customer personas, but a single staff voice, answered by a team member drawing on direct experience. A second staff interview would confirm the coordination claims in cluster CL3.",
+   divergence:"Sam is the only persona who sees the backstage. The notification problem is invisible to Jordan and merely ambient to Alex, but for Sam it is the hardest part of the job — and the P2 brief names staff as the primary audience.",
+   actors:["barista-day","counter","kitchen","callout","senior-peer","boss","table-lights","center-table","labels","tablet","shop","cust-daytime"],
+   path:["e41","e42","e31","e33","e34","e25","e24","e26","e28","e36","e37","e39","e40"],
+   ev:["S1-SQ03","S1-SQ04","S1-SQ05","S1-SQ07","S1-SQ09","S1-SQ16","S1-SQ19","S1-SQ20","S1-SQ22","S1-SQ23","S2-SQ07","OB01-E2"]}
 ];
 
 /* ========================================================================== */
@@ -1039,7 +1074,7 @@ function focusSets(){
     const e=edgeById[sel.id];
     return {nodes:new Set([e.from,e.to]),edges:new Set([e.id]),soft:false};
   }
-  if(sel.kind==="persona") return null;
+  if(sel.kind==="persona"||sel.kind==="appendix") return null;
   const nodes=new Set([sel.id]), edges=new Set();
   EXCHANGES.forEach(e=>{ if(e.from===sel.id||e.to===sel.id){edges.add(e.id);nodes.add(e.from);nodes.add(e.to);} });
   return {nodes,edges,soft:true};
@@ -1125,6 +1160,7 @@ function renderNode(id){
       <dt>In system</dt><dd>${a.status==="both"?"Published and observed":a.status==="observed"?"Observed only — named on no channel":"Published only"}</dd>
       <dt>Active</dt><dd>${a.time==="all"?"Throughout the day":a.time==="day"?"Daytime service":"Evening service"}</dd>
       <dt>Exchanges</dt><dd>${out.length} out, ${inn.length} in</dd>
+      ${a.touch?`<dt>Touchpoint</dt><dd>${esc(a.touch)}</dd>`:""}
     </dl>
     ${gaps.length?`<div class="sec">${gaps.map(c=>`<div class="contra-note"><div class="cn-h">${c.id} · ${esc(c.title)}</div><p>${esc(c.observed)}</p></div>`).join("")}</div>`:""}
     ${out.length?`<div class="sec"><div class="sec-h">Sends</div><div class="link-list">${out.map(e=>edgeLink(e,"to "+esc(byId[e.to].label))).join("")}</div></div>`:""}
@@ -1193,6 +1229,55 @@ function renderPersona(pid){
     ${evidenceBlock(p.ev)}`;
 }
 
+/* ============================================================================
+   RESEARCH APPENDIX — methods statement, plus an evidence index generated
+   from the same EVIDENCE object the map cites, so the two cannot drift apart.
+   ==========================================================================*/
+const METHODS = [
+  ["Approach","Indirect Engagement, as set in the P2 brief. Evidence comes from public materials and from participants the team could reach directly, so every actor, exchange and persona claim traces to a numbered item below."],
+  ["What was collected","Three interviews: S1, a daytime barista of four months; S2, a crossover shift of about ten months holding a cocktail licence; C1, a weekly daytime customer. One observation session, OB01, on Saturday 12 September 2026 from 3:30 to 8:30 PM, photo-based with six timestamped events, spanning the afternoon into evening service. Thirty-nine coded secondary items from six sources, accessed 14 September 2026. An eleven-item customer survey was written but not fielded."],
+  ["Coding","An inductive pass produced seventeen codes (CD01–CD17) grouped into six clusters (CL1–CL6), with disconfirming evidence recorded against each code rather than discarded."],
+  ["How actors were identified","Any party that exchanges value or information with the service was admitted, drawn from the codebook and secondary items rather than from the shop's own description of itself. Informal actors — the senior peer, the kiosk, the table lights, the shouted call-out, word of mouth — entered on interview and observation evidence alone, and appear on no channel the shop publishes."],
+  ["How exchanges were classified","Direction runs from the originating actor. An exchange carries value where money, goods, labour or a licence moves, and information otherwise. Constraints were attached to the specific exchange they bind rather than recorded as free-floating notes."],
+  ["How published and observed were separated","An exchange is published where a channel the shop controls, or is listed on, states it. It is observed where interview or observation evidence shows it happening. It is both where the two agree. The seven gaps are the cases where they disagree, and they are the analytical core of the map."],
+  ["How personas were derived","Alex and Jordan were built from the project brief and public review patterns, with behaviors explicitly marked to confirm because no interview yet supports them. Sam was built from interview S1 with support from S2 and OB01. Each persona's actors and route are drawn from nodes and exchanges on this map, so a persona claim and a map claim rest on the same evidence."],
+  ["Limitations","No evening customer has been interviewed, so every evening claim rests on one observation session and on staff accounts. No owner or manager access was available under Indirect Engagement. Both staff interviews and the customer interview were answered by team members drawing on direct experience, which yields unusually detailed backstage evidence but a narrow viewpoint. The survey was not fielded, so there are no quantitative data. Yelp blocked automated retrieval, so its items come from search-indexed snippets and the top-ranking claim (SR-Y02) is unverified. The joe.coffee review excerpts are undated, so the split before and after the August 2026 cocktail launch relies on seasonal menu items named in the reviews. One observation session, on a weekend, with no weekday morning data."],
+  ["Ethics","Role-based anonymization from the P2 consent protocol. Participants are referred to by role and number only. No customer or staff names were recorded, and none appear in this artifact. Persona names are invented composites, not participants."]
+];
+const EV_GROUPS = [
+  ["Staff interviews", id=>/^S\d/.test(id)],
+  ["Customer interview", id=>/^C\d/.test(id)],
+  ["Observation", id=>id.startsWith("OB")],
+  ["Secondary sources", id=>id.startsWith("SR-")]
+];
+function renderAppendix(){
+  const ids=Object.keys(EVIDENCE);
+  const groups=EV_GROUPS.map(([label,test])=>{
+    const rows=ids.filter(test);
+    return rows.length?`<div class="sec"><div class="sec-h">${label} · ${rows.length}</div>${
+      rows.map(id=>{const e=EVIDENCE[id];
+        return `<details class="ev"><summary><span class="ev-id">${esc(id)}</span><span class="ev-what">${esc(e.what)}</span></summary>
+          <div class="ev-body"><p class="ev-quote">${esc(e.quote)}</p><p class="ev-src">${esc(e.src)} · ${esc(e.date)}</p></div></details>`;
+      }).join("")}</div>`:"";
+  }).join("");
+  panelBody.innerHTML=`
+    <button class="iconbtn panel-close" data-close title="Close" aria-label="Close">${icon("close")}</button>
+    <div class="panel-kicker"><span class="sw" style="background:var(--c-institution)">${icon("clipboard")}</span>Research appendix</div>
+    <h2>Methods and evidence</h2>
+    <p class="panel-lede">How this map was built, what it rests on, and where it is thin.</p>
+    <dl class="meta">
+      <dt>Actors</dt><dd>${ACTORS.length}</dd>
+      <dt>Exchanges</dt><dd>${EXCHANGES.length}</dd>
+      <dt>Gaps</dt><dd>${CONTRADICTIONS.length}</dd>
+      <dt>Cited items</dt><dd>${ids.length}</dd>
+    </dl>
+    ${METHODS.map(([h,b])=>`<div class="sec"><div class="sec-h">${esc(h)}</div><p class="panel-lede">${esc(b)}</p></div>`).join("")}
+    <div class="sec" style="margin-top:26px"><div class="sec-h" style="font-size:11px;color:var(--ink)">Evidence index</div>
+      <p class="panel-lede" style="margin-bottom:10px">Every item cited by a node, exchange or persona on this map. IDs follow the P3 repository index, where the full set of thirty-nine secondary items is held.</p></div>
+    ${groups}
+    <div class="caveat">Common Coffee &amp; Cocktails, Doraville GA · ID 6126 Team 7 · D1 · evidence accessed through 14 September 2026.</div>`;
+}
+
 function select(kind,id){
   if(kind!=="persona"){ state.persona=null; syncPersona(); }
   if(state.selection&&state.selection.kind===kind&&state.selection.id===id&&kind!=="persona"){ clearSel(); return; }
@@ -1201,10 +1286,15 @@ function select(kind,id){
   else if(kind==="edge") renderEdge(id);
   else if(kind==="contra") renderContra(id);
   else if(kind==="persona") renderPersona(id);
-  syncContra(); paint();
+  else if(kind==="appendix") renderAppendix();
+  syncContra(); syncAppendix(); paint();
   document.getElementById("panel").scrollTop=0;
 }
-function clearSel(){ state.selection=null; state.persona=null; renderEmpty(); syncContra(); syncPersona(); paint(); }
+function clearSel(){ state.selection=null; state.persona=null; renderEmpty(); syncContra(); syncPersona(); syncAppendix(); paint(); }
+function syncAppendix(){
+  const b=document.getElementById("appendixBtn"); if(!b) return;
+  b.setAttribute("aria-pressed", state.selection&&state.selection.kind==="appendix"?"true":"false");
+}
 
 /* ---------- controls ---------- */
 [["resetBtn","reset"],["themeBtn","theme"],["zoomIn","plus"],["zoomOut","minus"],["zoomFit","fit"]]
@@ -1256,6 +1346,8 @@ PERSONAS.forEach(p=>{
 function syncPersona(){
   personaList.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",state.persona===b.dataset.persona?"true":"false"));
 }
+
+document.getElementById("appendixBtn").addEventListener("click",()=>select("appendix","appendix"));
 
 document.getElementById("modeSeg").addEventListener("click",ev=>{
   const b=ev.target.closest("button[data-mode]"); if(!b) return;
