@@ -1,0 +1,1263 @@
+<title>Common Coffee Ecosystem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap">
+
+<style>
+:root{
+  /* cool stone chrome */
+  --chrome:#E9ECEA; --chrome-2:#E0E4E1; --chrome-3:#D4D9D6;
+  --ink:#2C3133; --ink-2:#5E686A; --ink-3:#8B9597;
+  --rule:#CBD1CE; --rule-soft:#DCE1DE;
+  /* cement wall stage */
+  --stage:#F1F2F0; --stage-2:#E3E5E2; --stage-rim:#CDD2CF;
+  --stage-ink:#333A3C; --stage-ink-2:#68716F; --stage-ink-3:#98A19F;
+  /* the one warm note: the table lights */
+  --brass:#B5822C; --brass-deep:#8A611C; --brass-wash:rgba(181,130,44,.13);
+  /* actor hues — desaturated, cool-leaning */
+  --c-org:#39464A; --c-customer:#7CA8A2; --c-staff:#C58B7C;
+  --c-artifact:#B3AB88; --c-channel:#8B9BA8; --c-institution:#A3AAA4;
+  /* exchange lines */
+  --e-formal:#AFB5B2; --e-both:#798385; --e-observed:#B5822C;
+  --shadow:0 1px 2px rgba(44,49,51,.06), 0 10px 30px rgba(44,49,51,.09);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --chrome:#1B1F20; --chrome-2:#232829; --chrome-3:#2C3234;
+    --ink:#E4E8E7; --ink-2:#A8B1B1; --ink-3:#788283;
+    --rule:#343A3B; --rule-soft:#282D2E;
+    --stage:#272B2C; --stage-2:#1F2324; --stage-rim:#3D4443;
+    --stage-ink:#DDE2E1; --stage-ink-2:#8E9899; --stage-ink-3:#616A6B;
+    --e-formal:#565E5F; --e-both:#98A2A3; --e-observed:#D39A3E;
+    --brass:#D39A3E; --brass-deep:#E0AE58; --brass-wash:rgba(211,154,62,.16);
+    --c-org:#C3CFD2; --c-customer:#7CB0A9; --c-staff:#CF9384;
+    --c-artifact:#BEB68F; --c-channel:#93A4B2; --c-institution:#8E9791;
+    --shadow:0 1px 2px rgba(0,0,0,.45), 0 10px 30px rgba(0,0,0,.38);
+  }
+}
+:root[data-theme="dark"]{
+  --chrome:#1B1F20; --chrome-2:#232829; --chrome-3:#2C3234;
+  --ink:#E4E8E7; --ink-2:#A8B1B1; --ink-3:#788283;
+  --rule:#343A3B; --rule-soft:#282D2E;
+  --stage:#272B2C; --stage-2:#1F2324; --stage-rim:#3D4443;
+  --stage-ink:#DDE2E1; --stage-ink-2:#8E9899; --stage-ink-3:#616A6B;
+  --e-formal:#565E5F; --e-both:#98A2A3; --e-observed:#D39A3E;
+  --brass:#D39A3E; --brass-deep:#E0AE58; --brass-wash:rgba(211,154,62,.16);
+  --c-org:#C3CFD2; --c-customer:#7CB0A9; --c-staff:#CF9384;
+  --c-artifact:#BEB68F; --c-channel:#93A4B2; --c-institution:#8E9791;
+  --shadow:0 1px 2px rgba(0,0,0,.45), 0 10px 30px rgba(0,0,0,.38);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; background:var(--chrome); color:var(--ink);
+  font-family:"Archivo","Helvetica Neue",Arial,sans-serif;
+  font-size:14px; line-height:1.45; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{margin:0; text-wrap:balance; font-weight:600}
+p{margin:0}
+button{font:inherit; color:inherit; cursor:pointer; background:none; border:none}
+:focus-visible{outline:2px solid var(--brass); outline-offset:2px; border-radius:3px}
+
+.app{display:flex; flex-direction:column; height:100%; min-height:0}
+
+/* ---------- top bar ---------- */
+.topbar{
+  display:flex; align-items:center; gap:22px; flex-wrap:wrap;
+  padding:12px 20px; border-bottom:1px solid var(--rule); background:var(--chrome);
+}
+.brand h1{font-size:18px; letter-spacing:-.015em; font-weight:500}
+.brand .sub{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:10px;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--ink-3); margin-top:2px;
+}
+.topbar-actions{display:flex; gap:8px; margin-left:auto}
+.iconbtn{
+  width:34px; height:34px; border-radius:50%; display:grid; place-items:center; flex:none;
+  border:1px solid var(--rule); background:var(--chrome-2); color:var(--ink-2);
+  transition:background .15s, color .15s;
+}
+.iconbtn:hover{background:var(--chrome-3); color:var(--ink)}
+.iconbtn svg{width:17px; height:17px; display:block}
+
+/* ---------- body ---------- */
+.body{display:flex; flex:1; min-height:0}
+
+.rail{
+  width:244px; flex:none; overflow-y:auto; overflow-x:hidden; padding:16px 15px 40px;
+  border-right:1px solid var(--rule); background:var(--chrome);
+}
+.grp{margin-bottom:20px}
+.grp-h{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:9.5px;
+  letter-spacing:.11em; text-transform:uppercase; color:var(--ink-3); margin-bottom:8px;
+  display:flex; justify-content:space-between; align-items:baseline;
+}
+.seg{display:flex; border:1px solid var(--rule); border-radius:999px; overflow:hidden}
+.seg button{
+  flex:1; padding:6px 3px; font-size:11px; letter-spacing:.005em; color:var(--ink-2);
+  background:var(--chrome-2); border-right:1px solid var(--rule); transition:background .15s,color .15s;
+}
+.seg button:last-child{border-right:none}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--chrome); font-weight:500}
+.seg button:hover:not([aria-pressed="true"]){background:var(--chrome-3)}
+
+.chips{display:flex; flex-wrap:wrap; gap:4px}
+.chip{
+  display:flex; align-items:center; gap:5px; border:1px solid var(--rule); border-radius:999px;
+  padding:3px 10px 3px 6px; font-size:11px; color:var(--ink-2);
+  background:var(--chrome-2); transition:opacity .15s;
+}
+.chip .sw{width:14px; height:14px; border-radius:50%; flex:none; background:var(--sw);
+  display:grid; place-items:center; color:var(--chrome)}
+.chip .sw svg{width:9px; height:9px}
+.chip[aria-pressed="false"]{opacity:.36}
+.chip[aria-pressed="true"]{color:var(--ink); border-color:var(--ink-3)}
+
+.list{display:flex; flex-direction:column; gap:1px}
+.list button{
+  display:flex; gap:8px; align-items:flex-start; text-align:left;
+  padding:7px 10px; border-radius:10px; font-size:12px; line-height:1.35;
+  color:var(--ink-2); transition:background .15s;
+}
+.list button:hover{background:var(--chrome-2); color:var(--ink)}
+.list button[aria-pressed="true"]{background:var(--brass-wash); color:var(--ink)}
+.list .tag{
+  font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--brass-deep);
+  padding-top:1.5px; flex:none; font-weight:500;
+}
+.list button[aria-pressed="true"] .tag{color:var(--ink)}
+.persona-btn .pname{display:block; font-weight:500; color:var(--ink)}
+.persona-btn .pmeta{display:block; font-size:10.5px; color:var(--ink-3); margin-top:1px}
+.strength{
+  display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:9px;
+  letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:999px;
+  border:1px solid currentColor; margin-left:5px; vertical-align:1px;
+}
+.s-moderate{color:#6E8A72} .s-thin{color:#B07A3B}
+
+/* ---------- stage ---------- */
+.stage{
+  flex:1; min-width:0; min-height:0; position:relative;
+  background:var(--stage); overflow:hidden;
+}
+/* absolutely filled rather than flex-centred: no sub-pixel seam at the top */
+#map{position:absolute; inset:0; width:100%; height:100%; display:block; cursor:grab; touch-action:none}
+#map.grabbing{cursor:grabbing}
+.stage-empty{
+  position:absolute; inset:0; display:grid; place-items:center;
+  color:var(--stage-ink-3); font-size:13px; pointer-events:none; opacity:0; transition:opacity .3s;
+}
+
+/* permanent map key — stays put whatever is selected */
+.maplegend{
+  position:absolute; left:14px; bottom:14px; z-index:3;
+  display:flex; flex-wrap:wrap; align-items:center; gap:7px 13px;
+  background:color-mix(in srgb, var(--stage) 86%, transparent);
+  border:1px solid var(--stage-rim); border-radius:14px; padding:8px 14px;
+  -webkit-backdrop-filter:blur(5px); backdrop-filter:blur(5px);
+  font-size:10.5px; color:var(--stage-ink-2);
+  max-width:min(600px, calc(100% - 110px));
+}
+.mlrow{display:flex; align-items:center; gap:6px; white-space:nowrap}
+.mlrow svg{flex:none}
+.mlsep{width:1px; height:13px; background:var(--stage-rim); flex:none}
+
+.zoomctl{position:absolute; right:14px; bottom:14px; z-index:3; display:flex; flex-direction:column; gap:7px}
+.stage .iconbtn{
+  width:33px; height:33px; border-color:var(--stage-rim); color:var(--stage-ink-2);
+  background:color-mix(in srgb, var(--stage) 88%, transparent);
+  -webkit-backdrop-filter:blur(5px); backdrop-filter:blur(5px);
+}
+.stage .iconbtn:hover{background:var(--stage-2); color:var(--stage-ink)}
+.stage .iconbtn svg{width:16px; height:16px}
+
+/* Cement wall: its own stretched layer, so the grain stays a constant
+   physical size and always covers the stage whatever its shape. */
+.wall{
+  position:absolute; inset:0; width:100%; height:100%; display:block;
+  pointer-events:none; isolation:isolate; background:var(--stage);
+}
+.tex{mix-blend-mode:multiply}
+.tex-patch{opacity:.17}
+.tex-mottle{opacity:.085}
+.tex-pit{opacity:.28}
+/* dark concrete is smoother: the broad stain carries it, the pitting all but
+   disappears — speckle on a dark ground just reads as dirt. */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .tex{mix-blend-mode:soft-light}
+  :root:not([data-theme="light"]) .tex-patch{opacity:.42}
+  :root:not([data-theme="light"]) .tex-mottle{opacity:.10}
+  :root:not([data-theme="light"]) .tex-pit{opacity:.05}
+}
+:root[data-theme="dark"] .tex{mix-blend-mode:soft-light}
+:root[data-theme="dark"] .tex-patch{opacity:.42}
+:root[data-theme="dark"] .tex-mottle{opacity:.10}
+:root[data-theme="dark"] .tex-pit{opacity:.05}
+
+/* SVG internals */
+.halo-label{
+  font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.16em;
+  fill:var(--stage-ink-3); text-anchor:middle; pointer-events:none; text-transform:uppercase;
+}
+.edge{transition:opacity .4s ease}
+.edge-line{fill:none; transition:stroke-width .2s}
+.edge-hit{fill:none; stroke:transparent; stroke-width:15px; cursor:pointer}
+.node{transition:opacity .4s ease; cursor:pointer}
+.node-dot{transition:r .2s, stroke-width .2s}
+.node-icon{pointer-events:none}
+.node-label{
+  font-family:"Archivo",sans-serif; font-size:10.5px; font-weight:500; fill:var(--stage-ink);
+  text-anchor:middle; paint-order:stroke; stroke:var(--stage); stroke-width:3.4px;
+  stroke-linejoin:round; pointer-events:none; letter-spacing:.005em;
+}
+.node.is-org .node-label{font-size:13.5px; font-weight:600; letter-spacing:.02em}
+.node.is-institution .node-label{font-size:9.5px; fill:var(--stage-ink-2)}
+.contra-badge{cursor:pointer}
+.contra-badge text{
+  font-family:"IBM Plex Mono",monospace; font-size:8.5px; font-weight:500;
+  fill:var(--stage); text-anchor:middle; pointer-events:none;
+}
+.dimmed{opacity:.08}
+.faded{opacity:.26}
+.hidden-el{opacity:0; pointer-events:none}
+
+/* ---------- panel ---------- */
+.panel{
+  width:376px; flex:none; overflow-y:auto; overflow-x:hidden; background:var(--chrome);
+  border-left:1px solid var(--rule); padding:18px 18px 48px; position:relative;
+}
+.panel-kicker{
+  display:flex; align-items:center; gap:7px; margin-bottom:6px;
+  font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ink-3);
+}
+.panel-kicker .sw{width:17px; height:17px; border-radius:50%; flex:none; display:grid;
+  place-items:center; color:var(--chrome)}
+.panel-kicker .sw svg{width:11px; height:11px}
+.panel h2{font-size:18px; letter-spacing:-.01em; line-height:1.25; margin-bottom:8px; font-weight:500}
+.panel-lede{font-size:13px; color:var(--ink-2); line-height:1.55}
+.panel-close{position:absolute; top:12px; right:14px; width:28px; height:28px}
+.panel-close svg{width:14px; height:14px}
+
+.meta{
+  display:grid; grid-template-columns:auto 1fr; gap:4px 12px; margin:14px 0; padding:11px 0;
+  border-top:1px solid var(--rule-soft); border-bottom:1px solid var(--rule-soft); font-size:12px;
+}
+.meta dt{
+  font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.07em;
+  text-transform:uppercase; color:var(--ink-3); padding-top:2px;
+}
+.meta dd{margin:0; color:var(--ink)}
+
+.sec{margin-top:18px}
+.sec-h{
+  font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--ink-3); margin-bottom:7px;
+}
+.link-list{display:flex; flex-direction:column; gap:2px}
+.link-list button{
+  text-align:left; font-size:12.5px; color:var(--ink-2); line-height:1.4;
+  padding:5px 9px; border-radius:10px; display:flex; gap:8px; align-items:flex-start;
+}
+.link-list button:hover{background:var(--chrome-2); color:var(--ink)}
+.link-list .gl{flex:none; width:15px; height:15px; margin-top:1px; color:var(--ink-3)}
+.link-list .gl svg{width:15px; height:15px; display:block}
+
+.constraint{
+  background:var(--chrome-2); border-left:2px solid var(--c-staff);
+  padding:9px 12px; font-size:12.5px; color:var(--ink-2); line-height:1.5; border-radius:0 12px 12px 0;
+}
+.contra-note{
+  background:var(--brass-wash); border-left:2px solid var(--brass);
+  padding:10px 12px; border-radius:0 12px 12px 0;
+}
+.contra-note .cn-h{font-size:12.5px; font-weight:600; color:var(--ink); margin-bottom:3px}
+.contra-note p{font-size:12.5px; color:var(--ink-2); line-height:1.5}
+
+.ev{border-top:1px solid var(--rule-soft)}
+.ev summary{list-style:none; cursor:pointer; padding:7px 0 7px 2px; display:flex; align-items:baseline; gap:9px; font-size:12px}
+.ev summary::-webkit-details-marker{display:none}
+.ev summary:hover .ev-id{color:var(--ink)}
+.ev-id{font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:500; color:var(--ink-2); flex:none; min-width:66px}
+.ev-what{color:var(--ink-3); flex:1; line-height:1.4}
+.ev-body{padding:0 2px 12px 75px}
+.ev-quote{font-family:"Newsreader",Georgia,serif; font-size:15px; line-height:1.5; color:var(--ink); font-style:italic}
+.ev-src{font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--ink-3); margin-top:6px; letter-spacing:.02em}
+
+.empty-panel{color:var(--ink-3); font-size:13px; line-height:1.6}
+.empty-panel .eh{color:var(--ink); font-weight:600; font-size:14px; margin-bottom:6px}
+.caveat{margin-top:24px; padding-top:12px; border-top:1px solid var(--rule-soft); font-size:11.5px; color:var(--ink-3); line-height:1.5}
+
+@media (max-width:1180px){
+  .panel{position:absolute; right:0; top:0; bottom:0; z-index:5; box-shadow:var(--shadow); width:348px}
+  .body{position:relative}
+}
+@media (max-width:860px){
+  .body{flex-direction:column}
+  .rail{width:auto; border-right:none; border-bottom:1px solid var(--rule); max-height:196px;
+    padding:12px 16px; display:grid; grid-template-columns:repeat(auto-fit,minmax(196px,1fr)); gap:0 20px}
+  .grp{margin-bottom:14px}
+  .stage{min-height:400px}
+  .panel{width:100%; max-width:none}
+  .maplegend{left:10px; bottom:10px; padding:6px 10px; gap:5px 10px; font-size:9.5px;
+    max-width:calc(100% - 66px); border-radius:11px}
+  .zoomctl{right:10px; bottom:10px; gap:5px}
+  .stage .iconbtn{width:29px; height:29px}
+  .stage .iconbtn svg{width:14px; height:14px}
+}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important}}
+</style>
+
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <h1>Common Coffee &amp; Cocktails</h1>
+      <p class="sub">Service ecosystem · Doraville GA · Team 7 · D1</p>
+    </div>
+    <div class="topbar-actions">
+      <button class="iconbtn" id="resetBtn" title="Reset filters and view" aria-label="Reset filters and view"></button>
+      <button class="iconbtn" id="themeBtn" title="Switch light or dark" aria-label="Switch light or dark"></button>
+    </div>
+  </header>
+
+  <div class="body">
+    <aside class="rail">
+      <div class="grp">
+        <div class="grp-h">System view</div>
+        <div class="seg" id="modeSeg" role="group" aria-label="System view">
+          <button data-mode="both" aria-pressed="true">Both</button>
+          <button data-mode="formal" aria-pressed="false">Published</button>
+          <button data-mode="observed" aria-pressed="false">Observed</button>
+        </div>
+      </div>
+      <div class="grp">
+        <div class="grp-h">Time of day</div>
+        <div class="seg" id="timeSeg" role="group" aria-label="Time of day">
+          <button data-time="all" aria-pressed="true">All</button>
+          <button data-time="day" aria-pressed="false">Day</button>
+          <button data-time="evening" aria-pressed="false">Evening</button>
+        </div>
+      </div>
+      <div class="grp">
+        <div class="grp-h">Actor types</div>
+        <div class="chips" id="typeChips"></div>
+      </div>
+      <div class="grp">
+        <div class="grp-h"><span>Published vs observed</span><span style="color:var(--brass-deep);font-weight:500">7</span></div>
+        <div class="list" id="contraList"></div>
+      </div>
+      <div class="grp">
+        <div class="grp-h">Personas</div>
+        <div class="list" id="personaList"></div>
+        <p style="font-size:10.5px;color:var(--ink-3);margin-top:8px;line-height:1.45">
+          Placeholder set. Replace <code style="font-family:'IBM Plex Mono',monospace;font-size:10px">PERSONAS</code> in the source.
+        </p>
+      </div>
+    </aside>
+
+    <main class="stage">
+      <svg class="wall" id="wall" aria-hidden="true"></svg>
+      <svg id="map" viewBox="0 0 1240 920" preserveAspectRatio="xMidYMid meet" role="img"
+        aria-label="Interactive ecosystem map of Common Coffee and Cocktails, showing actors, exchanges, and the gaps between the published service system and the one observed in fieldwork."></svg>
+      <div class="stage-empty" id="stageEmpty">No actors match these filters.</div>
+
+      <div class="maplegend">
+        <div class="mlrow"><svg width="24" height="6" aria-hidden="true"><line x1="0" y1="3" x2="24" y2="3" stroke="var(--e-formal)" stroke-width="1.3" stroke-dasharray="4.5 4"/></svg>Published</div>
+        <div class="mlrow"><svg width="24" height="6" aria-hidden="true"><line x1="0" y1="3" x2="24" y2="3" stroke="var(--e-both)" stroke-width="1.3"/></svg>Both</div>
+        <div class="mlrow"><svg width="24" height="6" aria-hidden="true"><line x1="0" y1="3" x2="24" y2="3" stroke="var(--e-observed)" stroke-width="1.9"/></svg>Observed</div>
+        <span class="mlsep"></span>
+        <div class="mlrow"><svg width="24" height="8" aria-hidden="true"><line x1="0" y1="4" x2="24" y2="4" stroke="var(--e-both)" stroke-width="3"/></svg>Value</div>
+        <div class="mlrow"><svg width="24" height="8" aria-hidden="true"><line x1="0" y1="4" x2="24" y2="4" stroke="var(--e-both)" stroke-width="1"/></svg>Information</div>
+        <span class="mlsep"></span>
+        <div class="mlrow"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 .8 11.2 6 6 11.2.8 6Z" fill="var(--brass)"/></svg>Gap</div>
+      </div>
+
+      <div class="zoomctl">
+        <button class="iconbtn" id="zoomIn" title="Zoom in" aria-label="Zoom in"></button>
+        <button class="iconbtn" id="zoomOut" title="Zoom out" aria-label="Zoom out"></button>
+        <button class="iconbtn" id="zoomFit" title="Fit map to view" aria-label="Fit map to view"></button>
+      </div>
+    </main>
+
+    <aside class="panel" id="panel"><div id="panelBody"></div></aside>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* ============================================================================
+   ICON SET — 24×24, stroke-based, drawn to match the thin-line reference style
+   ==========================================================================*/
+const ICONS = {
+  speech:'<path d="M3 6.5A2 2 0 0 1 5 4.5h8a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H8l-3 2.5V12.5H5a2 2 0 0 1-2-2Z"/><path d="M9 16.5h6l3 2.5V17h1a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-1"/>',
+  browser:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M6 7h.01M8.5 7h.01"/>',
+  phone:'<rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/>',
+  star:'<path d="M12 3.6l2.6 5.3 5.8.85-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.2-4.1 5.8-.85Z"/>',
+  guide:'<path d="M3 5.5h6a3 3 0 0 1 3 3v10a2.4 2.4 0 0 0-2.4-2.4H3Z"/><path d="M21 5.5h-6a3 3 0 0 0-3 3v10a2.4 2.4 0 0 1 2.4-2.4H21Z"/>',
+  camera:'<rect x="3" y="3" width="18" height="18" rx="4.5"/><circle cx="12" cy="12" r="4"/><path d="M17.2 6.8h.01"/>',
+  card:'<rect x="2.5" y="5.5" width="19" height="13" rx="2"/><path d="M2.5 10h19M6 14.5h4"/>',
+  person:'<circle cx="12" cy="8" r="3.6"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/>',
+  group:'<circle cx="9" cy="8" r="3.2"/><path d="M3 19.5a6 6 0 0 1 12 0"/><path d="M16 5.2a3.2 3.2 0 0 1 0 5.9"/><path d="M17.5 14.4A6 6 0 0 1 21 19.5"/>',
+  newcomer:'<circle cx="12" cy="8" r="3.6"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/><path d="M19 4.5c0-1.2 1-2 2-2s2 .8 2 2c0 1.4-2 1.5-2 3" transform="translate(-2.4 .4) scale(.85)"/>',
+  shop:'<path d="M3.5 9.5h17v10a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5Z"/><path d="M2.5 9.5 4.8 3.5h14.4l2.3 6"/><path d="M9.5 21v-6h5v6"/>',
+  bottle:'<path d="M10 2.5h4v3.2l1.9 3.1a4 4 0 0 1 .6 2.1v8.6a2 2 0 0 1-2 2h-5a2 2 0 0 1-2-2v-8.6a4 4 0 0 1 .6-2.1L10 5.7Z"/><path d="M7.5 13.5h9"/>',
+  counter:'<path d="M2.5 11.5h19v8.5h-19Z"/><rect x="7" y="4" width="10" height="7" rx="1.4"/><path d="M9.5 7.5h5M2.5 15.5h19"/>',
+  kiosk:'<rect x="4.5" y="2.5" width="15" height="12" rx="1.8"/><path d="M12 14.5v5M8 21h8"/><path d="M8.5 6.5h7M8.5 10h4"/>',
+  megaphone:'<path d="M3 10v4a1.5 1.5 0 0 0 1.5 1.5H7l6 4.5v-16L7 8.5H4.5A1.5 1.5 0 0 0 3 10Z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19.5 6a8.5 8.5 0 0 1 0 12"/>',
+  chair:'<path d="M6 3.5h12v9H6Z"/><path d="M5 12.5h14M8 12.5v8M16 12.5v8"/>',
+  lamp:'<path d="M12 3.5c2 2.6 3.6 4.5 3.6 6.6a3.6 3.6 0 1 1-7.2 0c0-2.1 1.6-4 3.6-6.6Z"/><path d="M7 20.5h10"/>',
+  chefhat:'<path d="M6 12.5a4 4 0 1 1 1.6-7.7 4.2 4.2 0 0 1 8 .6A3.8 3.8 0 1 1 18 12.5Z"/><path d="M6 12.5h12v6a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 18.5Z"/>',
+  cup:'<path d="M4.5 6.5h13v8a5 5 0 0 1-5 5h-3a5 5 0 0 1-5-5Z"/><path d="M17.5 8.5h1.8a2.7 2.7 0 0 1 0 5.4h-1.8"/><path d="M7.5 2.5v2M11 2.5v2"/>',
+  cocktail:'<path d="M3.5 4.5h17L12 13.5Z"/><path d="M12 13.5v6M8 19.5h8"/><path d="M17 4.5c1.5-2 3.5-2.4 4.5-1.6"/>',
+  tag:'<path d="M3.5 11.2V4.5a1 1 0 0 1 1-1h6.7a2 2 0 0 1 1.4.6l7.3 7.3a2 2 0 0 1 0 2.8l-5.8 5.8a2 2 0 0 1-2.8 0L4.1 12.6a2 2 0 0 1-.6-1.4Z"/><circle cx="8" cy="8" r="1.5"/>',
+  senior:'<circle cx="12" cy="7.5" r="3.4"/><path d="M5.5 19.5a6.5 6.5 0 0 1 13 0"/><path d="M8.5 2.5 12 .8l3.5 1.7" transform="translate(0 .6)"/>',
+  owner:'<circle cx="12" cy="8.5" r="3.4"/><path d="M5.5 20.5a6.5 6.5 0 0 1 13 0"/><path d="m12 1 .95 1.95 2.15.31-1.55 1.52.36 2.14L12 5.9l-1.91 1.02.36-2.14L8.9 3.26l2.15-.31Z"/>',
+  tablet:'<rect x="4.5" y="2.5" width="15" height="19" rx="2.2"/><path d="M10.5 18.5h3"/>',
+  clipboard:'<path d="M8.5 4.5H6a1.5 1.5 0 0 0-1.5 1.5v14A1.5 1.5 0 0 0 6 21.5h12a1.5 1.5 0 0 0 1.5-1.5V6A1.5 1.5 0 0 0 18 4.5h-2.5"/><rect x="8.5" y="2.5" width="7" height="4" rx="1.2"/><path d="M8.5 12h7M8.5 16h4"/>',
+  seal:'<circle cx="12" cy="9.5" r="6.5"/><path d="M8.5 15.5 7 22l5-2.2L17 22l-1.5-6.5"/><path d="M9.5 9.5l1.8 1.8 3.4-3.4"/>',
+  shops:'<path d="M2.5 11h8v9h-8Z"/><path d="M2 11l1.6-4h5.8L11 11"/><path d="M13.5 13h8v7h-8Z"/><path d="M13 13l1.3-3.2h5.4L21 13"/>',
+  beans:'<ellipse cx="8.5" cy="9" rx="4.6" ry="5.8" transform="rotate(-28 8.5 9)"/><path d="M8.5 3.8c-1.5 3.4-1.5 6.9 0 10.4" transform="rotate(-28 8.5 9)"/><ellipse cx="15.5" cy="15" rx="4.6" ry="5.8" transform="rotate(-28 15.5 15)"/><path d="M15.5 9.8c-1.5 3.4-1.5 6.9 0 10.4" transform="rotate(-28 15.5 15)"/>',
+  loyalty:'<rect x="2.5" y="5" width="19" height="14" rx="2"/><circle cx="8" cy="12" r="2.6"/><path d="M13 10h5.5M13 14h3.5"/>',
+  arrowr:'<path d="M4 12h15M13.5 6.5 20 12l-6.5 5.5"/>',
+  dot:'<circle cx="12" cy="12" r="5" fill="currentColor" stroke="none"/>',
+  /* ---- interface ---- */
+  reset:'<path d="M3.6 12a8.4 8.4 0 1 0 2.5-6"/><path d="M2.8 3.2v4.6h4.6"/>',
+  theme:'<circle cx="12" cy="12" r="8.6"/><path d="M12 3.4a8.6 8.6 0 0 1 0 17.2Z" fill="currentColor" stroke="none"/>',
+  plus:'<path d="M12 5.5v13M5.5 12h13"/>',
+  minus:'<path d="M5.5 12h13"/>',
+  fit:'<path d="M8.6 3.6H5a1.4 1.4 0 0 0-1.4 1.4v3.6M15.4 3.6H19A1.4 1.4 0 0 1 20.4 5v3.6M8.6 20.4H5A1.4 1.4 0 0 1 3.6 19v-3.6M15.4 20.4H19a1.4 1.4 0 0 0 1.4-1.4v-3.6"/>',
+  close:'<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>'
+};
+function icon(name,cls){
+  const p=ICONS[name]; if(!p) return "";
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+    stroke-linecap="round" stroke-linejoin="round"${cls?` class="${cls}"`:""}>${p}</svg>`;
+}
+
+/* ============================================================================
+   EVIDENCE BASE — Team 7 P3 repository index (Section 3.1)
+   ==========================================================================*/
+const EVIDENCE = {
+  "S1-SQ03":{what:"Training structure and pay",src:"Staff interview S1, daytime barista",date:"Sept 2026",
+    quote:"Minimum of 5 days training session for each new staff, and during the last training session there will be a short test: 5 quiz, 3 about the ingredients of three drinks and 2 questions to act as a staff to answer questions for a customer. Training rate was 10 bucks per hour, and after will be 12 per hour."},
+  "S1-SQ04":{what:"Opening prep, invisible to customers",src:"Staff interview S1",date:"Sept 2026",
+    quote:"One barista will need to prepare bottles of matcha & hojicha… if it's during weekdays, one bottle for each would be fine; if it's friday and weekends, usually need to prepare 2-3 bottles for matcha. Another will prepare for the outside area: checking garbage bags, dial coffee machines, wiping tables, loading ice and putting ingredients."},
+  "S1-SQ05":{what:"Weekend peaks strain staffing",src:"Staff interview S1",date:"Sept 2026",
+    quote:"If it's Fri-Sun, there's chance that a bunch of customers will be waiting outside for opening, sometimes during noon or afternoon, we need 3 people to handle which we don't even have time to have lunch."},
+  "S1-SQ07":{what:"No system holds shift state",src:"Staff interview S1",date:"Sept 2026",
+    quote:"We don't have a system, we need to understand what each other is working on and remember to ask before doing any actions cuz you might miss some information about one drink or some special requests from customers."},
+  "S1-SQ08":{what:"The changeover ritual",src:"Staff interview S1",date:"Sept 2026",
+    quote:"There'll be one staff member who starts putting small lights on the table indicating we start offering cocktails. Before this, staff will start grabbing alcohol and other stuff for cocktails to the center table which stores those stuff."},
+  "S1-SQ09":{what:"No shift handoff",src:"Staff interview S1",date:"Sept 2026",quote:"Not really."},
+  "S1-SQ11":{what:"Daytime customers during changeover",src:"Staff interview S1",date:"Sept 2026",
+    quote:"Just don't bother them, if they asked about what's the light for just tell them we start serving cocktails."},
+  "S1-SQ16":{what:"Drink names need explaining",src:"Staff interview S1",date:"Sept 2026",
+    quote:"There are many names for coffee that are hard to understand so they will ask about what's inside that drink."},
+  "S1-SQ19":{what:"Coordination is verbal",src:"Staff interview S1",date:"Sept 2026",
+    quote:"Just speak up and ask to make sure you know who is doing what."},
+  "S1-SQ20":{what:"Escalation runs by seniority",src:"Staff interview S1",date:"Sept 2026",
+    quote:"I'll reach out to whoever works longer than me, otherwise I'll ask our boss."},
+  "S1-SQ22":{what:"The hardest part of the job",src:"Staff interview S1",date:"Sept 2026",
+    quote:"No screens or speakers to tell customers their drinks are ready during coffee times. Staff need to shout and hope customers hear the notification. It's very tiring and costs energy to do it."},
+  "S1-SQ23":{what:"Staff's own proposed fix",src:"Staff interview S1",date:"Sept 2026",
+    quote:"Add a speaker and a screen for order notification."},
+  "S2-SQ03":{what:"Cocktail capability is personal",src:"Staff interview S2, crossover shift",date:"Sept 2026",
+    quote:"I have pretty long working experience in Starbucks, so I didn't have a long training time. And for cocktails, I have a cocktail license, so there's not much of a difference between being a barista or bartender."},
+  "S2-SQ04":{what:"Evening shift is closing work",src:"Staff interview S2",date:"Sept 2026",
+    quote:"Evening shifts are more about closing. Before cocktails opened, we started organizing stuff to prepare around 20 minutes before closing."},
+  "S2-SQ07":{what:"The one system that exists",src:"Staff interview S2",date:"Sept 2026",
+    quote:"Simple systems maybe like printing labels separately for kitchen and baristas."},
+  "S2-SQ20":{what:"Escalation goes straight up",src:"Staff interview S2",date:"Sept 2026",quote:"Our boss or manager."},
+  "C1-CQ01":{what:"How this customer found the shop",src:"Customer interview C1, daytime regular",date:"Sept 2026",
+    quote:"Heard about it from a friend; drives there."},
+  "C1-CQ03":{what:"Purpose of the visit",src:"Customer interview C1",date:"Sept 2026",
+    quote:"Usually comes alone to see a friend. Sometimes sits to work or read. Basically to relax."},
+  "C1-CQ04":{what:"The visit, step by step",src:"Customer interview C1",date:"Sept 2026",quote:"Drove there and ordered."},
+  "C1-CQ05":{what:"The kiosk workaround",src:"Customer interview C1",date:"Sept 2026",
+    quote:"Much the same as other coffee shops. If many people are ordering with staff, use the kiosk to order instead."},
+  "C1-CQ06":{what:"The daytime atmosphere",src:"Customer interview C1",date:"Sept 2026",
+    quote:"Nice vibe, generally quiet, with quiet, relaxed background music."},
+  "C1-CQ11":{what:"Hours and menus were clear — disconfirming",src:"Customer interview C1",date:"Sept 2026",quote:"Yes, clear."},
+  "C1-CQ12":{what:"What brings this customer back",src:"Customer interview C1",date:"Sept 2026",
+    quote:"The shop is starting to sell seasonal drinks, and some sound interesting enough to go and try."},
+  "OB01-E1":{what:"3:30 PM — afternoon calm",src:"Observation OB01",date:"Sat 12 Sept 2026",
+    quote:"Several customers sat along the right wall with drinks and food. Some faced each other and appeared to be chatting. The middle walkway was mostly clear, and no line was visible at the counter."},
+  "OB01-E2":{what:"5:00 PM — turnover depends on staff",src:"Observation OB01",date:"Sat 12 Sept 2026",
+    quote:"Some afternoon customers finished and left. Staff cleared their tables while a few new customers came in and found seats."},
+  "OB01-E3":{what:"6:00 PM — a customer has to ask",src:"Observation OB01",date:"Sat 12 Sept 2026",
+    quote:"A few customers arrived and checked the menu at the counter. One asked whether coffee was still available in the evening."},
+  "OB01-E4":{what:"6:30 PM — groups need help to sit",src:"Observation OB01",date:"Sat 12 Sept 2026",
+    quote:"More customers came with friends. A group looked for seats together and asked staff if they could move two tables closer."},
+  "OB01-E5":{what:"7:00 PM — waiting blocks the walkway",src:"Observation OB01",date:"Sat 12 Sept 2026",
+    quote:"Several people waited near the counter for drinks. Customers walking back to their seats had to move around them."},
+  "OB01-E6":{what:"7:30 PM — staff reset the room",src:"Observation OB01",date:"Sat 12 Sept 2026",
+    quote:"Some customers left while others stayed and talked. Staff collected empty glasses and cleaned tables for new arrivals."},
+  "SR-W01":{what:"Website tagline, no changeover time",src:"Shop website",date:"Accessed 14 Sept 2026",
+    quote:"Tagline reads “coffee by day | cocktails by night”. No changeover time is given anywhere on the site."},
+  "SR-W02":{what:"Website hours",src:"Shop website",date:"Accessed 14 Sept 2026",quote:"Mon–Thu 10am–10pm, Fri–Sun 11am–11pm."},
+  "SR-W04":{what:"No menu published on the site",src:"Shop website",date:"Accessed 14 Sept 2026",
+    quote:"No coffee or cocktail menu appears on the site; ordering links out to Chowbus."},
+  "SR-A01":{what:"A second set of hours",src:"atlantacoffeeshops.com",date:"Updated 11 Aug 2026",
+    quote:"Mon–Thu 10AM–12AM, Fri–Sun 11AM–1AM, “subject to change”."},
+  "SR-A02":{what:"Opening date",src:"atlantacoffeeshops.com",date:"Dec 2025",quote:"Soft and grand opening 19 December 2025."},
+  "SR-A03":{what:"The only published cocktail menu",src:"atlantacoffeeshops.com",date:"Updated 18 Aug 2026",
+    quote:"Cocktails unveiled August 2026; six drinks with Eastern ingredients, for example Tom Yum Soup and Liquid Pineapple Bun."},
+  "SR-A04":{what:"Seasonal menu rhythm",src:"atlantacoffeeshops.com",date:"Pre and post launch",
+    quote:"Menu leans on cocktail-style coffee drinks; seasonal menus Winter 2025, Summer 2026."},
+  "SR-O01":{what:"Chowbus pickup",src:"Chowbus ordering page",date:"14 Sept 2026",quote:"Pickup only; ASAP orders ready in 30 minutes."},
+  "SR-O02":{what:"A third set of hours",src:"Chowbus ordering page",date:"14 Sept 2026",
+    quote:"Orders accepted until 9:30 PM Mon; 10:30 PM Fri–Sun."},
+  "SR-O03":{what:"No alcohol on the ordering menu",src:"Chowbus ordering page",date:"14 Sept 2026",
+    quote:"No cocktails or alcohol on the online menu despite the store name."},
+  "SR-O04":{what:"Loyalty points",src:"Chowbus ordering page",date:"14 Sept 2026",
+    quote:"Several desserts dine-in only; points program redeemable for merch."},
+  "SR-J01":{what:"Roasting claim",src:"joe.coffee aggregated page",date:"Accessed 14 Sept 2026",
+    quote:"Categorized as cafe roaster, cocktail bar, and coffee and tea; calls itself an independent roaster, though atlantacoffeeshops.com lists outside roasters."},
+  "SR-J02":{what:"A fourth set of hours",src:"joe.coffee aggregated page",date:"Accessed 14 Sept 2026",quote:"Hours 12 PM–9 PM every day."},
+  "SR-J03":{what:"Mobile ordering said to be unavailable",src:"joe.coffee aggregated page",date:"Accessed 14 Sept 2026",
+    quote:"States mobile ordering is not available, though Chowbus ordering exists."},
+  "SR-J06":{what:"Dark and cozy — disconfirming on pickup",src:"joe.coffee review, 3 stars, day",date:"Winter 2025–26",
+    quote:"Dark, cozy, good for hanging out; food and drinks hit or miss; staff kind, brought items to the table."},
+  "SR-J07":{what:"Aesthetic-driven discovery",src:"joe.coffee review, 5 stars, day",date:"Likely pre-launch",
+    quote:"Minimalist, “perfect for Instagram”; wants to return for “creative cocktails”."},
+  "SR-J08":{what:"The interior read as closed",src:"joe.coffee review, 1 star",date:"Undated",quote:"Thought the shop was closed: dark, no open sign."},
+  "SR-J10":{what:"Call-out not audible",src:"joe.coffee review, 1 star",date:"Undated",quote:"Order call-out not audible; drinks identified by sight."},
+  "SR-Y01":{what:"Yelp categorises it as a bar",src:"Yelp listing",date:"Listing dated Aug 2026",
+    quote:"Yelp lists it under Cocktail Bars, with the city as Atlanta."},
+  "SR-Y02":{what:"Contested daytime niche",src:"Yelp Doraville coffee ranking",date:"Rankings Jan–Jun 2026",
+    quote:"Search index reports #1 among top 10 Doraville coffee places, ahead of Postern Coffee, White Windmill, Ark Coffeehaus, Java Saga, Family Baking. Unverified."}
+};
+
+/* ============================================================================
+   TYPES + CLUSTER HALOS
+   ==========================================================================*/
+const TYPES = {
+  org:        {label:"The shop",     icon:"shop",      hex:"var(--c-org)"},
+  customer:   {label:"Customer",     icon:"person",    hex:"var(--c-customer)"},
+  staff:      {label:"Staff",        icon:"cup",       hex:"var(--c-staff)"},
+  artifact:   {label:"Artifact",     icon:"kiosk",     hex:"var(--c-artifact)"},
+  channel:    {label:"Channel",      icon:"browser",   hex:"var(--c-channel)"},
+  institution:{label:"Institution",  icon:"seal",      hex:"var(--c-institution)"}
+};
+
+const HALOS = [
+  {id:"h-find",  label:"Finding out",   cx:340, cy:230, r:215},
+  {id:"h-cust",  label:"Who comes in",  cx:215, cy:655, r:150},
+  {id:"h-room",  label:"The room",      cx:585, cy:620, r:215},
+  {id:"h-back",  label:"Backstage",     cx:985, cy:450, r:205}
+];
+
+/* ============================================================================
+   ACTORS — hand-placed into clusters, never force-simulated, so the map
+   looks identical for every reader.
+   ==========================================================================*/
+const ACTORS = [
+  // ---- finding out ----
+  {id:"website",     label:"Website",         type:"channel", ico:"browser", x:255, y:110, status:"both",     time:"all",
+   desc:"Carries the tagline and one set of hours, but no menu and no changeover time.", ev:["SR-W01","SR-W02","SR-W04"]},
+  {id:"atlcoffee",   label:"ATL Coffeeshops", type:"channel", ico:"guide",   x:450, y:165, status:"both",     time:"all",
+   desc:"A third-party guide, and the only place the cocktail menu is published.", ev:["SR-A01","SR-A02","SR-A03","SR-A04"]},
+  {id:"chowbus",     label:"Chowbus",         type:"channel", ico:"phone",   x:190, y:215, status:"both",     time:"all",
+   desc:"The shop's outsourced ordering path. Pickup only, and coffee only.", ev:["SR-O01","SR-O02","SR-O03","SR-O04"]},
+  {id:"joecoffee",   label:"joe.coffee",      type:"channel", ico:"star",    x:375, y:290, status:"both",     time:"all",
+   desc:"Aggregated reviews, 4.3 from 80. Publishes a third set of hours and denies that mobile ordering exists.", ev:["SR-J01","SR-J02","SR-J03"]},
+  {id:"yelp",        label:"Yelp",            type:"channel", ico:"star",    x:500, y:275, status:"both",     time:"all",
+   desc:"Files the shop under Cocktail Bars, in the wrong city, with an unverified ranking.", ev:["SR-Y01","SR-Y02"]},
+  {id:"instagram",   label:"Instagram",       type:"channel", ico:"camera",  x:300, y:375, status:"observed", time:"all",
+   desc:"Not a channel the team studied directly, but reviewers name the look as the reason they came.", ev:["SR-J07"]},
+  {id:"wordofmouth", label:"Word of mouth",   type:"channel", ico:"speech",  x:165, y:335, status:"observed", time:"all",
+   desc:"How the one interviewed customer actually found the shop. It appears on no channel the shop controls.", ev:["C1-CQ01"]},
+
+  // ---- who comes in ----
+  {id:"cust-daytime",  label:"Daytime regular", type:"customer", ico:"person",   x:215, y:545, status:"both",     time:"day",
+   desc:"Weekly, alone, there to work, read or relax. Finds the service legible and works around the queue without being asked to.",
+   ev:["C1-CQ01","C1-CQ03","C1-CQ05","C1-CQ06","C1-CQ11","C1-CQ12"]},
+  {id:"cust-evening",  label:"Evening group",   type:"customer", ico:"group",    x:150, y:680, status:"observed", time:"evening",
+   desc:"Arrives with friends after 6 PM. Needs seating help, and has to ask what is being served. No evening customer has been interviewed — this actor rests on observation alone.",
+   ev:["OB01-E3","OB01-E4","OB01-E5"]},
+  {id:"cust-firsttime",label:"First-timer",     type:"customer", ico:"newcomer", x:270, y:760, status:"both",     time:"all",
+   desc:"Meets the shop through four channels that disagree, and an unlit frontage.", ev:["SR-J07","SR-J08","SR-Y01"]},
+
+  // ---- the room ----
+  {id:"counter",      label:"Counter",       type:"artifact", ico:"counter",   x:490, y:540, status:"both",     time:"all",
+   desc:"Order point and pickup point in one. Every exchange between customer and staff passes through it.", ev:["OB01-E1","OB01-E5"]},
+  {id:"kiosk",        label:"Kiosk",         type:"artifact", ico:"kiosk",     x:420, y:640, status:"observed", time:"all",
+   desc:"Named by no channel, and contradicted by one. Customers use it to skip the counter line.", ev:["C1-CQ05","SR-J03"]},
+  {id:"callout",      label:"Shouted call-out", type:"artifact", ico:"megaphone", x:505, y:735, status:"observed", time:"day",
+   desc:"The drink-ready notification. There is no screen and no speaker, so staff shout and hope.", ev:["S1-SQ22","S1-SQ23","SR-J10"]},
+  {id:"seating",      label:"Seating",       type:"artifact", ico:"chair",     x:665, y:585, status:"both",     time:"all",
+   desc:"Small tables along one wall with a single central walkway. Fits pairs; strains under groups and queues.", ev:["OB01-E1","OB01-E4","OB01-E5"]},
+  {id:"table-lights", label:"Table lights",  type:"artifact", ico:"lamp",      x:690, y:705, status:"observed", time:"evening",
+   desc:"Small lights placed on the tables. The only signal in the entire system that coffee service has become cocktail service.", ev:["S1-SQ08","S1-SQ11","SR-W01"]},
+  {id:"center-table", label:"Alcohol store", type:"artifact", ico:"bottle",    x:700, y:480, status:"observed", time:"evening",
+   desc:"The centre table, where cocktail supplies live and where staff stage them before the changeover.", ev:["S1-SQ08"]},
+
+  // ---- backstage ----
+  {id:"barista-day",       label:"Barista",        type:"staff",    ico:"cup",      x:895, y:380, status:"both",     time:"day",
+   desc:"Four months' tenure. Opens the bar, explains the menu, clears tables, and carries the notification problem personally.",
+   ev:["S1-SQ03","S1-SQ04","S1-SQ05","S1-SQ22"]},
+  {id:"kitchen",           label:"Kitchen",        type:"staff",    ico:"chefhat",  x:1065,y:330, status:"both",     time:"all",
+   desc:"One kitchen member on the morning shift, coordinating with the bar by voice and printed label.", ev:["S1-SQ04","S2-SQ07"]},
+  {id:"barista-crossover", label:"Crossover staff",type:"staff",    ico:"cocktail", x:920, y:510, status:"both",     time:"evening",
+   desc:"Ten months, prior Starbucks experience, holds a cocktail licence. The bridge between the two services is one person's credential.",
+   ev:["S2-SQ03","S2-SQ04"]},
+  {id:"labels",            label:"Printed labels", type:"artifact", ico:"tag",      x:1100,y:450, status:"observed", time:"all",
+   desc:"Separate tickets for kitchen and bar. Named by staff as the only system they have.", ev:["S2-SQ07"]},
+  {id:"senior-peer",       label:"Senior peer",    type:"staff",    ico:"senior",   x:1040,y:575, status:"observed", time:"all",
+   desc:"Not a role on any org chart. Whoever has worked there longest is the first escalation point.", ev:["S1-SQ20"]},
+  {id:"boss",              label:"Owner",          type:"staff",    ico:"owner",    x:900, y:615, status:"both",     time:"all",
+   desc:"Decides when seniority cannot. The team had no access under Indirect Engagement, so this actor is visible only through staff accounts.",
+   ev:["S1-SQ20","S2-SQ20"]},
+  {id:"tablet",            label:"Clock-out tablet",type:"artifact",ico:"tablet",   x:1120,y:570, status:"both",     time:"all",
+   desc:"The only digital system in the staff workflow, and it records hours rather than service state.", ev:["S1-SQ04"]},
+
+  // ---- the hub ----
+  {id:"shop",    label:"Common",  type:"org",     ico:"shop",    x:730, y:360, status:"both", time:"all", r:28,
+   desc:"Common Coffee & Cocktails. Independent specialty coffee shop and roaster, opened December 2025. Added a cocktail program in August 2026, making one small room serve two occasions.",
+   ev:["SR-A02","SR-A03","SR-W01"]},
+  {id:"loyalty", label:"Loyalty", type:"channel", ico:"loyalty", x:860, y:250, status:"both", time:"all",
+   desc:"Points redeemable for merch. The shop's only formal retention mechanism.", ev:["SR-O04","C1-CQ12"]},
+
+  // ---- institutional context (outside the clusters; out of P2 scope) ----
+  {id:"health",      label:"Health permit",   type:"institution", ico:"clipboard", x:420, y:858, status:"formal", time:"all",     r:12, labelAbove:true,
+   desc:"Standard local food service permitting. Context only — back-office is out of the P2 scope.", ev:["SR-A02"]},
+  {id:"alcohol",     label:"Alcohol licence", type:"institution", ico:"seal",      x:580, y:858, status:"formal", time:"evening", r:12, labelAbove:true,
+   desc:"Georgia on-premise consumption licensing. The regulatory change that made the evening service possible.", ev:["SR-A03","SR-Y01"]},
+  {id:"competitors", label:"Nearby cafes",    type:"institution", ico:"shops",     x:740, y:858, status:"formal", time:"day",     r:12, labelAbove:true,
+   desc:"Postern, GULA, White Windmill, Ark, Java Saga. Reviewers already name Postern and GULA as the study-and-work spots.", ev:["SR-Y02"]},
+  {id:"roasters",    label:"Roasters",        type:"institution", ico:"beans",     x:900, y:858, status:"formal", time:"all",     r:12, labelAbove:true,
+   desc:"Listed as suppliers even though the shop presents itself as an independent roaster. Context only.", ev:["SR-J01","SR-A04"]}
+];
+
+/* ============================================================================
+   EXCHANGES — value and information, with direction, status and constraint
+   ==========================================================================*/
+const EXCHANGES = [
+  {id:"e01",from:"website",to:"cust-firsttime",kind:"information",status:"formal",time:"all",label:"publishes hours 10–10 / 11–11",ev:["SR-W02"],contra:"C2"},
+  {id:"e02",from:"atlcoffee",to:"cust-firsttime",kind:"information",status:"formal",time:"all",label:"publishes hours 10am–12am / 11am–1am",ev:["SR-A01"],contra:"C2"},
+  {id:"e03",from:"joecoffee",to:"cust-firsttime",kind:"information",status:"formal",time:"all",label:"publishes hours 12pm–9pm",ev:["SR-J02"],contra:"C2"},
+  {id:"e04",from:"chowbus",to:"cust-firsttime",kind:"information",status:"formal",time:"all",label:"last order 9:30pm / 10:30pm",ev:["SR-O02"],contra:"C2"},
+  {id:"e05",from:"website",to:"cust-evening",kind:"information",status:"formal",time:"evening",label:"“coffee by day, cocktails by night” — but no time",ev:["SR-W01"],contra:"C1",
+   constraint:"The promise is made on every channel. The schedule behind it is published on none."},
+  {id:"e06",from:"atlcoffee",to:"cust-evening",kind:"information",status:"formal",time:"evening",label:"the only published cocktail menu",ev:["SR-A03"],contra:"C3"},
+  {id:"e07",from:"chowbus",to:"cust-daytime",kind:"information",status:"both",time:"day",label:"pickup orders, ready in ~30 min",ev:["SR-O01"]},
+  {id:"e08",from:"chowbus",to:"cust-evening",kind:"information",status:"formal",time:"evening",label:"no alcohol listed, despite the store name",ev:["SR-O03"],contra:"C3"},
+  {id:"e09",from:"joecoffee",to:"cust-firsttime",kind:"information",status:"formal",time:"all",label:"states mobile ordering is unavailable",ev:["SR-J03"],contra:"C4"},
+  {id:"e10",from:"yelp",to:"cust-firsttime",kind:"information",status:"formal",time:"all",label:"filed under Cocktail Bars, city shown as Atlanta",ev:["SR-Y01"],contra:"C3"},
+  {id:"e11",from:"instagram",to:"cust-firsttime",kind:"information",status:"observed",time:"all",label:"the interior draws the visit",ev:["SR-J07"]},
+  {id:"e12",from:"wordofmouth",to:"cust-daytime",kind:"information",status:"observed",time:"all",label:"heard about it from a friend",ev:["C1-CQ01"]},
+  {id:"e13",from:"website",to:"cust-firsttime",kind:"information",status:"formal",time:"all",label:"no menu on the site; ordering links out",ev:["SR-W04"],contra:"C3"},
+  {id:"e14",from:"loyalty",to:"cust-daytime",kind:"value",status:"both",time:"all",label:"points, redeemable for merch",ev:["SR-O04","C1-CQ12"]},
+
+  {id:"e15",from:"cust-daytime",to:"counter",kind:"value",status:"both",time:"day",label:"pays",ev:["C1-CQ04"]},
+  {id:"e16",from:"cust-evening",to:"counter",kind:"value",status:"both",time:"evening",label:"pays",ev:["OB01-E3"]},
+  {id:"e17",from:"cust-daytime",to:"kiosk",kind:"information",status:"observed",time:"all",label:"switches to the kiosk when the line is long",ev:["C1-CQ05"],contra:"C4",
+   constraint:"A workaround the customer invented. No channel tells anyone the kiosk exists."},
+  {id:"e18",from:"kiosk",to:"counter",kind:"information",status:"observed",time:"all",label:"order arrives without a conversation",ev:["C1-CQ05"]},
+  {id:"e19",from:"cust-daytime",to:"seating",kind:"information",status:"observed",time:"day",label:"sits alone to work, read or relax",ev:["C1-CQ03","C1-CQ06","SR-J06"]},
+  {id:"e20",from:"cust-evening",to:"seating",kind:"information",status:"observed",time:"evening",label:"asks staff to move tables together",ev:["OB01-E4"],
+   constraint:"Small tables fit pairs. Groups cannot seat themselves without staff labour."},
+  {id:"e21",from:"cust-evening",to:"counter",kind:"information",status:"observed",time:"evening",label:"waiting crowd blocks the walkway",ev:["OB01-E5"],
+   constraint:"One central walkway serves both the queue and the route back to the tables."},
+  {id:"e22",from:"cust-evening",to:"barista-day",kind:"information",status:"observed",time:"evening",label:"asks whether coffee is still served",ev:["OB01-E3"],contra:"C1"},
+  {id:"e23",from:"cust-firsttime",to:"shop",kind:"information",status:"observed",time:"evening",label:"reads the dark frontage as closed, and leaves",ev:["SR-J08"],contra:"C7"},
+
+  {id:"e24",from:"callout",to:"cust-daytime",kind:"information",status:"observed",time:"day",label:"drink-ready, shouted, often not heard",ev:["S1-SQ22","SR-J10"],contra:"C5"},
+  {id:"e25",from:"barista-day",to:"callout",kind:"information",status:"observed",time:"day",label:"shouts, because there is no screen or speaker",ev:["S1-SQ22","S1-SQ23"],contra:"C5",
+   constraint:"Staff describe this as the hardest part of the job, and the change they would make first."},
+  {id:"e26",from:"barista-day",to:"cust-daytime",kind:"information",status:"observed",time:"all",label:"explains what is inside unfamiliar drinks",ev:["S1-SQ16","S1-SQ03"]},
+  {id:"e27",from:"barista-day",to:"cust-evening",kind:"information",status:"observed",time:"evening",label:"explains the lights, only if asked",ev:["S1-SQ11"],contra:"C1"},
+  {id:"e28",from:"barista-day",to:"seating",kind:"information",status:"observed",time:"all",label:"clears tables so new arrivals can sit",ev:["OB01-E2","OB01-E6","S2-SQ04"]},
+  {id:"e29",from:"table-lights",to:"cust-evening",kind:"information",status:"observed",time:"evening",label:"the only signal that service has changed",ev:["S1-SQ08","SR-W01"],contra:"C1"},
+  {id:"e30",from:"table-lights",to:"cust-daytime",kind:"information",status:"observed",time:"evening",label:"daytime customers are left undisturbed",ev:["S1-SQ11","OB01-E2"]},
+
+  {id:"e31",from:"barista-day",to:"kitchen",kind:"information",status:"observed",time:"all",label:"verbal check before acting",ev:["S1-SQ07"],contra:"C6",
+   constraint:"Nothing records what is in progress. State lives in memory and in whoever is willing to ask."},
+  {id:"e32",from:"labels",to:"kitchen",kind:"information",status:"observed",time:"all",label:"splits kitchen and bar tickets",ev:["S2-SQ07"]},
+  {id:"e33",from:"barista-day",to:"senior-peer",kind:"information",status:"observed",time:"all",label:"asks whoever has worked there longer",ev:["S1-SQ20"],contra:"C6"},
+  {id:"e34",from:"senior-peer",to:"boss",kind:"information",status:"observed",time:"all",label:"escalates what seniority cannot settle",ev:["S1-SQ20","S2-SQ20"]},
+  {id:"e35",from:"barista-crossover",to:"boss",kind:"information",status:"observed",time:"all",label:"goes straight to the boss",ev:["S2-SQ20"]},
+  {id:"e36",from:"barista-day",to:"table-lights",kind:"information",status:"observed",time:"evening",label:"one staff member places the lights",ev:["S1-SQ08"]},
+  {id:"e37",from:"barista-day",to:"center-table",kind:"value",status:"observed",time:"evening",label:"stages alcohol before service",ev:["S1-SQ08"]},
+  {id:"e38",from:"barista-crossover",to:"counter",kind:"information",status:"observed",time:"evening",label:"carries the cocktail licence personally",ev:["S2-SQ03"],contra:null,
+   constraint:"Cocktail capability sits with individuals rather than with the rota. It walks out at the end of a shift."},
+  {id:"e39",from:"barista-day",to:"tablet",kind:"information",status:"both",time:"all",label:"clocks out",ev:["S1-SQ04"]},
+  {id:"e40",from:"shop",to:"barista-day",kind:"value",status:"both",time:"all",label:"$10/hr training, $12/hr after; 5 days plus a test",ev:["S1-SQ03"]},
+  {id:"e41",from:"barista-day",to:"counter",kind:"information",status:"both",time:"day",label:"opens the bar: machines, ice, creams, matcha",ev:["S1-SQ04","S1-SQ05"],
+   constraint:"Prep volume scales with the day of the week. Fri–Sun needs three people and leaves no lunch break."},
+  {id:"e42",from:"kitchen",to:"counter",kind:"information",status:"both",time:"all",label:"food reaches the same counter",ev:["S1-SQ04"]},
+  {id:"e43",from:"shop",to:"barista-crossover",kind:"value",status:"both",time:"all",label:"wages and rota",ev:["S2-SQ03"]},
+
+  {id:"e44",from:"shop",to:"counter",kind:"information",status:"both",time:"all",label:"the only ordering touchpoint",ev:["OB01-E1"]},
+  {id:"e45",from:"shop",to:"seating",kind:"information",status:"both",time:"all",label:"the second touchpoint",ev:["OB01-E1"]},
+  {id:"e46",from:"shop",to:"website",kind:"information",status:"formal",time:"all",label:"publishes its own hours and tagline",ev:["SR-W01","SR-W02"]},
+  {id:"e47",from:"shop",to:"chowbus",kind:"information",status:"both",time:"all",label:"ordering is outsourced",ev:["SR-W04","SR-O01"]},
+  {id:"e48",from:"shop",to:"loyalty",kind:"value",status:"both",time:"all",label:"issues points",ev:["SR-O04"]},
+
+  {id:"e49",from:"health",to:"shop",kind:"information",status:"formal",time:"all",label:"food service permit",ev:["SR-A02"]},
+  {id:"e50",from:"alcohol",to:"shop",kind:"information",status:"formal",time:"evening",label:"on-premise licence enabled the August 2026 launch",ev:["SR-A03","SR-Y01"]},
+  {id:"e51",from:"competitors",to:"cust-daytime",kind:"information",status:"formal",time:"day",label:"already hold the study-and-work niche",ev:["SR-Y02"]},
+  {id:"e52",from:"roasters",to:"shop",kind:"value",status:"formal",time:"all",label:"supply beans",ev:["SR-J01","SR-A04"]}
+];
+
+/* ============================================================================
+   THE SEVEN GAPS between the published system and the observed one
+   ==========================================================================*/
+const CONTRADICTIONS = [
+  {id:"C1",title:"The changeover has no stated time",
+   formal:"Every channel repeats “coffee by day, cocktails by night.”",
+   observed:"No channel says when night begins. The only signal is a staff member placing small lights on the tables, and it is explained only to customers who ask.",
+   cluster:"CL2",edges:["e05","e22","e27","e29"],nodes:["table-lights"],ev:["SR-W01","S1-SQ08","S1-SQ11","OB01-E3"]},
+  {id:"C2",title:"Four channels, four sets of hours",
+   formal:"The website, ATL Coffeeshops, Chowbus and joe.coffee each publish a schedule.",
+   observed:"They close anywhere between 9 PM and 1 AM, and no two agree. A customer arriving at 9:30 PM cannot tell from any of them whether the shop is open.",
+   cluster:"CL2",edges:["e01","e02","e03","e04"],nodes:[],ev:["SR-W02","SR-A01","SR-O02","SR-J02"]},
+  {id:"C3",title:"The cocktail menu is on one third-party site",
+   formal:"The shop is named for its cocktails and Yelp files it as a cocktail bar.",
+   observed:"The six cocktails appear only on ATL Coffeeshops. The shop's own website has no menu at all, and the ordering page lists no alcohol.",
+   cluster:"CL2 / CL5",edges:["e06","e08","e10","e13"],nodes:[],ev:["SR-A03","SR-O03","SR-W04","SR-Y01"]},
+  {id:"C4",title:"“No mobile ordering,” yet two paths exist",
+   formal:"joe.coffee states that mobile ordering is unavailable.",
+   observed:"Chowbus takes pickup orders, and there is a self-order kiosk in the room that customers use to skip the counter line. Neither is announced anywhere.",
+   cluster:"CL1",edges:["e09","e17"],nodes:["kiosk"],ev:["SR-J03","SR-O01","C1-CQ05"]},
+  {id:"C5",title:"No drink-ready notification, so staff shout",
+   formal:"There is no notification system, and none is described anywhere.",
+   observed:"Staff call out across the room and hope customers hear. Reviewers report identifying their drinks by sight. Staff name this the hardest part of the job.",
+   cluster:"CL1",edges:["e24","e25"],nodes:["callout"],ev:["S1-SQ22","S1-SQ23","SR-J10","OB01-E5"]},
+  {id:"C6",title:"No coordination system; memory and seniority instead",
+   formal:"No shift handoff, no ticketing, no shared state. Staff say plainly that there is no system.",
+   observed:"Coordination runs on speaking up, asking before acting, and escalating to whoever has worked there longest. Printed labels are the single artifact holding any of it.",
+   cluster:"CL3",edges:["e31","e33"],nodes:["senior-peer","labels"],ev:["S1-SQ07","S1-SQ09","S1-SQ19","S1-SQ20"]},
+  {id:"C7",title:"The praised dark interior reads as closed",
+   formal:"The minimalist, low-lit room is the shop's strongest public asset; five of six reviews praise it.",
+   observed:"The same room made one party think the shop was shut and turn away. The aesthetic that drives discovery also suppresses it.",
+   cluster:"CL4",edges:["e23"],nodes:[],ev:["SR-J08","SR-J07","SR-J06"]}
+];
+
+/* ============================================================================
+   PERSONAS — PLACEHOLDER SET. Owner: teammate.
+   Keep `actors` and `path` pointing at real ids and the highlight works.
+   ==========================================================================*/
+const PERSONAS = [
+  {id:"p-regular",name:"The Daytime Regular",basis:"C1",strength:"moderate",
+   goal:"An hour of quiet that does not need managing.",
+   context:"Visits weekly, alone, during the day. Drives in. Sometimes meets a friend, more often works or reads.",
+   constraints:"Has never been in during evening service, so has no idea the room changes. Will not queue behind a crowd.",
+   behaviors:"Switches to the self-order kiosk when the counter is busy. Signed up for the loyalty program. Returns for seasonal drinks rather than for a usual.",
+   relationships:"Found the place through a friend, not a channel. Treats staff as a reliable answer desk; asks and gets helped.",
+   divergence:"Reports the hours and menus as perfectly clear — the strongest disconfirming evidence in the set. This persona never encounters the problems the other two live inside.",
+   actors:["cust-daytime","wordofmouth","kiosk","counter","seating","barista-day","callout","loyalty"],
+   path:["e12","e17","e18","e15","e19","e26","e24","e14"],
+   ev:["C1-CQ01","C1-CQ03","C1-CQ05","C1-CQ06","C1-CQ11","C1-CQ12"]},
+  {id:"p-evening",name:"The Evening Group",basis:"OB01 + secondary",strength:"thin",
+   goal:"A night out with three or four friends, seated together.",
+   context:"Arrives after 6 PM on a weekend, drawn by the look of the place and the promise of cocktails.",
+   constraints:"Cannot tell from any channel what is being served or until when. Cannot seat a group without asking staff to move furniture. Waits in a queue that blocks the room's only walkway.",
+   behaviors:"Checks the menu at the counter because there is nowhere else to check it. Asks staff whether coffee is still available. Asks to move two tables together.",
+   relationships:"Depends on staff for information the service never published, and for physical access to the room.",
+   divergence:"Every step this persona takes is a step the Daytime Regular never takes. Their Phase 2 journey is made of the four gaps the published system leaves open.",
+   actors:["cust-evening","instagram","atlcoffee","website","counter","seating","table-lights","barista-day","barista-crossover"],
+   path:["e05","e06","e16","e20","e21","e22","e27","e29","e38"],
+   ev:["OB01-E3","OB01-E4","OB01-E5","SR-A03","SR-W01","SR-J07"]},
+  {id:"p-barista",name:"The Counter Barista",basis:"S1",strength:"moderate",
+   goal:"Keep the counter moving without dropping anything, and get through a weekend shift.",
+   context:"Four months in. Daytime shifts. Opens the bar: machines, ice, three creams, matcha and hojicha bottles scaled to the day of the week.",
+   constraints:"No system holds what anyone is working on. No screen or speaker for drink-ready. Fri–Sun peaks need three people and leave no time for lunch.",
+   behaviors:"Asks before acting. Shouts drink names. Explains what is inside drinks with unfamiliar names. Clears tables so the next group can sit. Places the lights that start cocktail service.",
+   relationships:"Checks in with the kitchen by voice. Escalates to whoever has worked there longest, then to the boss.",
+   divergence:"The primary audience named in the P2 brief. This persona's pain points are invisible to both customer personas, and the fix they name themselves is a concrete Phase 3 prototype.",
+   actors:["barista-day","counter","kitchen","callout","senior-peer","boss","table-lights","center-table","shop","tablet"],
+   path:["e41","e42","e31","e33","e34","e25","e36","e37","e39","e40"],
+   ev:["S1-SQ04","S1-SQ05","S1-SQ07","S1-SQ16","S1-SQ19","S1-SQ20","S1-SQ22","S1-SQ23"]}
+];
+
+/* ========================================================================== */
+const SVGNS="http://www.w3.org/2000/svg";
+const byId = Object.fromEntries(ACTORS.map(a=>[a.id,a]));
+const edgeById = Object.fromEntries(EXCHANGES.map(e=>[e.id,e]));
+const contraById = Object.fromEntries(CONTRADICTIONS.map(c=>[c.id,c]));
+
+const state={mode:"both",time:"all",types:new Set(Object.keys(TYPES)),selection:null,persona:null,hover:null};
+const svg=document.getElementById("map");
+const panelBody=document.getElementById("panelBody");
+
+function el(tag,attrs,parent){
+  const n=document.createElementNS(SVGNS,tag);
+  for(const k in attrs) n.setAttribute(k,attrs[k]);
+  if(parent) parent.appendChild(n);
+  return n;
+}
+
+/* --- defs: marble veining, stone grain, arrowheads, icon symbols --- */
+const defs=el("defs",{},svg);
+
+/* Cement wall, built in three layers: broad patchy staining, a medium
+   trowelled mottle, and the fine dark pitting you get in poured concrete. */
+function greyNoise(id,freq,octaves,seed){
+  const f=el("filter",{id,x:"0",y:"0",width:"100%",height:"100%"},defs);
+  el("feTurbulence",{type:"fractalNoise",baseFrequency:freq,numOctaves:octaves,seed,result:"n"},f);
+  el("feColorMatrix",{in:"n",type:"saturate",values:"0",result:"g"},f);
+  const ct=el("feComponentTransfer",{in:"g"},f);
+  el("feFuncA",{type:"linear",slope:"0",intercept:"1"},ct);
+  return f;
+}
+greyNoise("fPatch","0.0055",4,"21");   // broad staining
+greyNoise("fMottle","0.03",3,"7");     // trowel texture
+// fine pitting: threshold high-frequency noise so only a fraction goes dark
+const fPit=el("filter",{id:"fPit",x:"0",y:"0",width:"100%",height:"100%"},defs);
+el("feTurbulence",{type:"fractalNoise",baseFrequency:"0.7",numOctaves:"1",seed:"3",result:"n"},fPit);
+el("feColorMatrix",{in:"n",type:"saturate",values:"0",result:"g"},fPit);
+const pitCT=el("feComponentTransfer",{in:"g"},fPit);
+["feFuncR","feFuncG","feFuncB"].forEach(fn=>el(fn,{type:"discrete",tableValues:"0.34 1 1 1 1 1 1 1 1 1"},pitCT));
+el("feFuncA",{type:"linear",slope:"0",intercept:"1"},pitCT);
+
+[["a-formal","var(--e-formal)"],["a-both","var(--e-both)"],["a-observed","var(--e-observed)"]].forEach(([id,fill])=>{
+  const m=el("marker",{id,viewBox:"0 0 8 8",refX:"7",refY:"4",markerWidth:"5",markerHeight:"5",orient:"auto-start-reverse"},defs);
+  el("path",{d:"M0.6 1 L7.4 4 L0.6 7 Z",fill},m);
+});
+
+// icon symbols
+Object.entries(ICONS).forEach(([name,d])=>{
+  const s=el("symbol",{id:"sym-"+name,viewBox:"0 0 24 24"},defs);
+  s.innerHTML=`<g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${d}</g>`;
+});
+
+/* --- cement wall: fixed behind the map, never pans or zooms --- */
+const wall=document.getElementById("wall");
+["tex-patch|fPatch","tex-mottle|fMottle","tex-pit|fPit"].forEach(spec=>{
+  const [cls,f]=spec.split("|");
+  el("rect",{x:0,y:0,width:"100%",height:"100%",class:"tex "+cls,filter:`url(#${f})`},wall);
+});
+
+/* --- everything below pans and zooms together --- */
+const viewport=el("g",{class:"viewport"},svg);
+
+/* --- cluster halos --- */
+const gHalos=el("g",{class:"halos","pointer-events":"none"},viewport);
+HALOS.forEach(h=>{
+  el("circle",{cx:h.cx,cy:h.cy,r:h.r,fill:"var(--stage-2)",opacity:"0.75"},gHalos);
+  el("circle",{cx:h.cx,cy:h.cy,r:h.r,fill:"none",stroke:"var(--stage-rim)","stroke-width":"1"},gHalos);
+  el("circle",{cx:h.cx,cy:h.cy,r:h.r-13,fill:"none",stroke:"var(--stage-rim)","stroke-width":"0.6",opacity:"0.55"},gHalos);
+  el("text",{class:"halo-label",x:h.cx,y:h.cy-h.r+20},gHalos).textContent=h.label;
+});
+
+const gEdges=el("g",{class:"edges"},viewport);
+const gBadges=el("g",{class:"badges"},viewport);
+const gNodes=el("g",{class:"nodes"},viewport);
+
+/* --- node radius by how much each actor is involved --- */
+const degree={};
+EXCHANGES.forEach(e=>{degree[e.from]=(degree[e.from]||0)+1; degree[e.to]=(degree[e.to]||0)+1;});
+function radiusOf(a){ return a.r || (15 + Math.min(degree[a.id]||0,9)*0.62); }
+
+/* --- curvature: spread parallel exchanges between the same pair --- */
+const pairCount={}, pairIndex={};
+EXCHANGES.forEach(e=>{const k=[e.from,e.to].sort().join("|"); pairCount[k]=(pairCount[k]||0)+1;});
+EXCHANGES.forEach(e=>{const k=[e.from,e.to].sort().join("|"); pairIndex[e.id]=(pairIndex[k]=(pairIndex[k]??-1)+1);});
+
+function geom(e){
+  const a=byId[e.from], b=byId[e.to];
+  const ra=radiusOf(a)+4, rb=radiusOf(b)+8;
+  const dx=b.x-a.x, dy=b.y-a.y, len=Math.hypot(dx,dy)||1;
+  const ux=dx/len, uy=dy/len;
+  const x1=a.x+ux*ra, y1=a.y+uy*ra, x2=b.x-ux*rb, y2=b.y-uy*rb;
+  const k=[e.from,e.to].sort().join("|");
+  const n=pairCount[k], i=pairIndex[e.id];
+  const bend = 0.14 + (n>1 ? (i-(n-1)/2)*0.21 : 0);
+  const mx=(x1+x2)/2-(y2-y1)*bend, my=(y1+y2)/2+(x2-x1)*bend;
+  return {x1,y1,x2,y2,mx,my,
+    d:`M${x1.toFixed(1)} ${y1.toFixed(1)} Q${mx.toFixed(1)} ${my.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`,
+    // point at t=0.5 on the quadratic — badges sit exactly on the curve
+    mid:{x:0.25*x1+0.5*mx+0.25*x2, y:0.25*y1+0.5*my+0.25*y2}};
+}
+const GEOM=Object.fromEntries(EXCHANGES.map(e=>[e.id,geom(e)]));
+const STROKE={formal:"var(--e-formal)",both:"var(--e-both)",observed:"var(--e-observed)"};
+
+/* --- edges --- */
+EXCHANGES.forEach(e=>{
+  const g=el("g",{class:"edge","data-id":e.id,tabindex:"0",role:"button",
+    "aria-label":`${byId[e.from].label} to ${byId[e.to].label}: ${e.label}`},gEdges);
+  const G=GEOM[e.id];
+  el("path",{class:"edge-hit",d:G.d},g);
+  el("path",{class:"edge-line",d:G.d,stroke:STROKE[e.status],
+    "stroke-width": e.kind==="value" ? 2.7 : 1.1,
+    "stroke-dasharray": e.status==="formal" ? "5 4.5" : "none",
+    "marker-end":`url(#a-${e.status})`,"stroke-linecap":"round"},g);
+  g.addEventListener("click",()=>{if(clickBlocked())return;select("edge",e.id);});
+  g.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();select("edge",e.id);}});
+  g.addEventListener("mouseenter",()=>{state.hover={kind:"edge",id:e.id};paint();});
+  g.addEventListener("mouseleave",()=>{state.hover=null;paint();});
+});
+
+/* --- contradiction badges --- */
+CONTRADICTIONS.forEach(c=>{
+  c.edges.forEach(eid=>{
+    const G=GEOM[eid]; if(!G) return;
+    const p=G.mid;
+    const g=el("g",{class:"contra-badge","data-contra":c.id,"data-edge":eid,tabindex:"0",role:"button",
+      "aria-label":`Gap ${c.id}: ${c.title}`},gBadges);
+    el("path",{d:`M${p.x} ${p.y-8.5} L${p.x+8.5} ${p.y} L${p.x} ${p.y+8.5} L${p.x-8.5} ${p.y} Z`,
+      fill:"var(--brass)",stroke:"var(--stage)","stroke-width":"1.3"},g);
+    el("text",{x:p.x,y:p.y+3},g).textContent=c.id.slice(1);
+    g.addEventListener("click",ev=>{ev.stopPropagation();if(clickBlocked())return;select("contra",c.id);});
+    g.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();select("contra",c.id);}});
+  });
+});
+
+/* --- nodes --- */
+ACTORS.forEach(a=>{
+  const g=el("g",{class:`node is-${a.type}`,"data-id":a.id,tabindex:"0",role:"button",
+    "aria-label":`${a.label}, ${TYPES[a.type].label}`},gNodes);
+  const r=radiusOf(a);
+  if(a.status==="observed"){
+    el("circle",{class:"node-halo",cx:a.x,cy:a.y,r:r+5.5,fill:"none",stroke:"var(--brass)","stroke-width":"1",opacity:".5"},g);
+  }
+  el("circle",{class:"node-dot",cx:a.x,cy:a.y,r,fill:TYPES[a.type].hex,
+    stroke:"var(--stage)","stroke-width":a.type==="org"?2.5:1.8},g);
+  const s=r*1.12;
+  el("use",{class:"node-icon",href:"#sym-"+(a.ico||TYPES[a.type].icon),
+    x:a.x-s/2,y:a.y-s/2,width:s,height:s,color:"var(--stage)",opacity:"0.92"},g);
+  el("text",{class:"node-label",x:a.x,y:a.labelAbove ? a.y-r-8 : a.y+r+14},g).textContent=a.label;
+  g.addEventListener("click",()=>{if(clickBlocked())return;select("node",a.id);});
+  g.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();select("node",a.id);}});
+  g.addEventListener("mouseenter",()=>{state.hover={kind:"node",id:a.id};paint();});
+  g.addEventListener("mouseleave",()=>{state.hover=null;paint();});
+});
+
+/* ============================================================================
+   ZOOM + PAN — wheel or pinch-trackpad to zoom about the cursor, drag to pan.
+   The cement wall stays fixed; only the map moves over it.
+   ==========================================================================*/
+const VB={w:1240,h:920}, MINK=0.4, MAXK=5;
+let view={k:1,x:0,y:0};
+function applyView(){
+  viewport.setAttribute("transform",`translate(${view.x.toFixed(2)} ${view.y.toFixed(2)}) scale(${view.k.toFixed(4)})`);
+}
+function unitsPerPx(){
+  const r=svg.getBoundingClientRect();
+  return Math.min(r.width/VB.w, r.height/VB.h) || 1;
+}
+function viewBoxPoint(e){
+  const r=svg.getBoundingClientRect(), s=unitsPerPx();
+  // preserveAspectRatio="xMidYMid meet" centres the viewBox in the element
+  return {x:(e.clientX-r.left-(r.width-VB.w*s)/2)/s,
+          y:(e.clientY-r.top -(r.height-VB.h*s)/2)/s};
+}
+function zoomAbout(pt,factor){
+  const k2=Math.min(MAXK,Math.max(MINK,view.k*factor));
+  const f=k2/view.k;
+  view.x=pt.x-(pt.x-view.x)*f;
+  view.y=pt.y-(pt.y-view.y)*f;
+  view.k=k2;
+  applyView();
+}
+function resetView(){ view={k:1,x:0,y:0}; applyView(); }
+
+svg.addEventListener("wheel",e=>{
+  e.preventDefault();
+  zoomAbout(viewBoxPoint(e), Math.exp(-e.deltaY*0.0018));
+},{passive:false});
+
+let panning=false, panMoved=false, panLast=null, panEndedAt=0;
+svg.addEventListener("pointerdown",e=>{
+  if(e.button!==0) return;
+  panning=true; panMoved=false; panLast={x:e.clientX,y:e.clientY};
+});
+window.addEventListener("pointermove",e=>{
+  if(!panning) return;
+  const dx=e.clientX-panLast.x, dy=e.clientY-panLast.y;
+  if(!panMoved && Math.hypot(dx,dy)>4){ panMoved=true; svg.classList.add("grabbing"); }
+  if(panMoved){
+    const s=unitsPerPx();
+    view.x+=dx/s; view.y+=dy/s;
+    panLast={x:e.clientX,y:e.clientY};
+    applyView();
+  }
+});
+window.addEventListener("pointerup",()=>{
+  if(panMoved) panEndedAt=Date.now();
+  panning=false; panMoved=false; svg.classList.remove("grabbing");
+});
+// a drag that ends over a node must not also select it
+function clickBlocked(){ return Date.now()-panEndedAt < 180; }
+
+/* ========================================================================== */
+function edgePasses(e){
+  if(state.mode==="formal"   && e.status==="observed") return false;
+  if(state.mode==="observed" && e.status==="formal")   return false;
+  if(state.time!=="all" && e.time!=="all" && e.time!==state.time) return false;
+  if(!state.types.has(byId[e.from].type) || !state.types.has(byId[e.to].type)) return false;
+  return true;
+}
+function nodePasses(a){
+  if(!state.types.has(a.type)) return false;
+  if(state.mode==="formal"   && a.status==="observed") return false;
+  if(state.mode==="observed" && a.status==="formal")   return false;
+  if(state.time!=="all" && a.time!=="all" && a.time!==state.time) return false;
+  return true;
+}
+function focusSets(){
+  const sel=state.hover||state.selection;
+  if(state.persona){
+    const p=PERSONAS.find(x=>x.id===state.persona);
+    // soft: a persona's route has to read *against* the rest of the system
+    if(p) return {nodes:new Set(p.actors),edges:new Set(p.path),soft:true};
+  }
+  if(!sel) return null;
+  if(sel.kind==="contra"){
+    const c=contraById[sel.id]; const nodes=new Set(c.nodes);
+    c.edges.forEach(id=>{const e=edgeById[id]; if(e){nodes.add(e.from);nodes.add(e.to);}});
+    return {nodes,edges:new Set(c.edges),soft:false};
+  }
+  if(sel.kind==="edge"){
+    const e=edgeById[sel.id];
+    return {nodes:new Set([e.from,e.to]),edges:new Set([e.id]),soft:false};
+  }
+  if(sel.kind==="persona") return null;
+  const nodes=new Set([sel.id]), edges=new Set();
+  EXCHANGES.forEach(e=>{ if(e.from===sel.id||e.to===sel.id){edges.add(e.id);nodes.add(e.from);nodes.add(e.to);} });
+  return {nodes,edges,soft:true};
+}
+
+function paint(){
+  const focus=focusSets();
+  let visible=0;
+  gNodes.querySelectorAll(".node").forEach(g=>{
+    const a=byId[g.dataset.id], pass=nodePasses(a);
+    g.classList.toggle("hidden-el",!pass);
+    g.setAttribute("tabindex",pass?"0":"-1");
+    if(pass) visible++;
+    g.classList.remove("dimmed","faded");
+    if(pass&&focus&&!focus.nodes.has(a.id)) g.classList.add(focus.soft?"faded":"dimmed");
+    const isSel=state.selection&&state.selection.kind==="node"&&state.selection.id===a.id;
+    const dot=g.querySelector(".node-dot"), r=radiusOf(a);
+    dot.setAttribute("r",r+(isSel?3:0));
+    dot.setAttribute("stroke",isSel?"var(--brass)":"var(--stage)");
+    dot.setAttribute("stroke-width",isSel?3:(a.type==="org"?2.5:1.8));
+  });
+  gEdges.querySelectorAll(".edge").forEach(g=>{
+    const e=edgeById[g.dataset.id], pass=edgePasses(e);
+    g.classList.toggle("hidden-el",!pass);
+    g.setAttribute("tabindex",pass?"0":"-1");
+    g.classList.remove("dimmed","faded");
+    if(pass&&focus&&!focus.edges.has(e.id)) g.classList.add(focus.soft?"faded":"dimmed");
+    const isSel=state.selection&&state.selection.kind==="edge"&&state.selection.id===e.id;
+    const base=e.kind==="value"?2.7:1.1;
+    g.querySelector(".edge-line").setAttribute("stroke-width",isSel?base+1.7:base);
+  });
+  gBadges.querySelectorAll(".contra-badge").forEach(g=>{
+    const e=edgeById[g.dataset.edge], pass=edgePasses(e);
+    g.classList.toggle("hidden-el",!pass);
+    g.setAttribute("tabindex",pass?"0":"-1");
+    g.classList.remove("dimmed","faded");
+    if(pass&&focus&&!focus.edges.has(e.id)) g.classList.add(focus.soft?"faded":"dimmed");
+  });
+  document.getElementById("stageEmpty").style.opacity=visible?0:1;
+}
+
+/* ========================================================================== */
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function swatch(a){
+  return `<span class="sw" style="background:${TYPES[a.type].hex}">${icon(a.ico||TYPES[a.type].icon)}</span>`;
+}
+function evidenceBlock(ids){
+  const seen=new Set();
+  const rows=ids.filter(id=>{if(!EVIDENCE[id]||seen.has(id))return false;seen.add(id);return true;}).map(id=>{
+    const e=EVIDENCE[id];
+    return `<details class="ev"><summary><span class="ev-id">${esc(id)}</span><span class="ev-what">${esc(e.what)}</span></summary>
+      <div class="ev-body"><p class="ev-quote">${esc(e.quote)}</p><p class="ev-src">${esc(e.src)} · ${esc(e.date)}</p></div></details>`;
+  }).join("");
+  return rows?`<div class="sec"><div class="sec-h">Evidence · click to open</div>${rows}</div>`:"";
+}
+function nodeLink(id,extra){
+  const a=byId[id];
+  return `<button data-node="${id}"><span class="gl" style="color:${TYPES[a.type].hex}">${icon(a.ico||TYPES[a.type].icon)}</span><span>${esc(a.label)}${extra||""}</span></button>`;
+}
+function edgeLink(e,dirText){
+  return `<button data-edge="${e.id}"><span class="gl">${icon("arrowr")}</span><span>${esc(e.label)} <span style="color:var(--ink-3)">${dirText}</span></span></button>`;
+}
+
+function renderEmpty(){
+  panelBody.innerHTML=`<div class="empty-panel">
+    <p class="eh">Nothing selected</p>
+    <p>Click an actor, a line, or a brass diamond. Scroll to zoom, drag to pan.</p>
+    <p style="margin-top:12px">Switching <b>System view</b> from Published to Observed is the fastest way to see the argument: the kiosk, the table lights, the senior peer and the shouted call-out all appear, and none of them are named anywhere the shop publishes.</p>
+    <div class="caveat"><b>Evidence base.</b> Three interviews (S1, S2 daytime and crossover staff; C1 daytime customer), one 5-hour observation (OB01, Sat 12 Sept 2026), and 39 coded secondary items. The survey was written but not fielded. No evening customer and no owner have been interviewed, so evening and management claims rest on observation and staff accounts. IDs follow the P3 repository index.</div>
+  </div>`;
+}
+
+function renderNode(id){
+  const a=byId[id];
+  const out=EXCHANGES.filter(e=>e.from===id), inn=EXCHANGES.filter(e=>e.to===id);
+  const gaps=CONTRADICTIONS.filter(c=>c.nodes.includes(id));
+  panelBody.innerHTML=`
+    <button class="iconbtn panel-close" data-close title="Close" aria-label="Close">${icon("close")}</button>
+    <div class="panel-kicker">${swatch(a)}${esc(TYPES[a.type].label)}${a.status==="observed"?" · observed only":a.status==="formal"?" · published only":""}</div>
+    <h2>${esc(a.label)}</h2>
+    <p class="panel-lede">${esc(a.desc)}</p>
+    <dl class="meta">
+      <dt>In system</dt><dd>${a.status==="both"?"Published and observed":a.status==="observed"?"Observed only — named on no channel":"Published only"}</dd>
+      <dt>Active</dt><dd>${a.time==="all"?"Throughout the day":a.time==="day"?"Daytime service":"Evening service"}</dd>
+      <dt>Exchanges</dt><dd>${out.length} out, ${inn.length} in</dd>
+    </dl>
+    ${gaps.length?`<div class="sec">${gaps.map(c=>`<div class="contra-note"><div class="cn-h">${c.id} · ${esc(c.title)}</div><p>${esc(c.observed)}</p></div>`).join("")}</div>`:""}
+    ${out.length?`<div class="sec"><div class="sec-h">Sends</div><div class="link-list">${out.map(e=>edgeLink(e,"to "+esc(byId[e.to].label))).join("")}</div></div>`:""}
+    ${inn.length?`<div class="sec"><div class="sec-h">Receives</div><div class="link-list">${inn.map(e=>edgeLink(e,"from "+esc(byId[e.from].label))).join("")}</div></div>`:""}
+    ${evidenceBlock(a.ev)}`;
+}
+
+function renderEdge(id){
+  const e=edgeById[id], a=byId[e.from], b=byId[e.to];
+  const c=e.contra?contraById[e.contra]:null;
+  panelBody.innerHTML=`
+    <button class="iconbtn panel-close" data-close title="Close" aria-label="Close">${icon("close")}</button>
+    <div class="panel-kicker"><span class="sw" style="background:${STROKE[e.status]}"></span>${e.kind==="value"?"Value exchange":"Information exchange"}</div>
+    <h2>${esc(a.label)} <span style="color:var(--ink-3);font-weight:400">→</span> ${esc(b.label)}</h2>
+    <p class="panel-lede">${esc(e.label)}</p>
+    <dl class="meta">
+      <dt>Status</dt><dd>${e.status==="both"?"Published and observed":e.status==="observed"?"Observed only":"Published only"}</dd>
+      <dt>Carries</dt><dd>${e.kind==="value"?"Value":"Information"}</dd>
+      <dt>Active</dt><dd>${e.time==="all"?"Throughout the day":e.time==="day"?"Daytime service":"Evening service"}</dd>
+    </dl>
+    ${e.constraint?`<div class="sec"><div class="sec-h">Constraint</div><p class="constraint">${esc(e.constraint)}</p></div>`:""}
+    ${c?`<div class="sec"><div class="contra-note"><div class="cn-h">${c.id} · ${esc(c.title)}</div><p>${esc(c.observed)}</p></div></div>`:""}
+    <div class="sec"><div class="sec-h">Actors</div><div class="link-list">${nodeLink(a.id)}${nodeLink(b.id)}</div></div>
+    ${evidenceBlock(e.ev)}`;
+}
+
+function renderContra(id){
+  const c=contraById[id];
+  const allEv=[...c.ev];
+  c.edges.forEach(eid=>edgeById[eid]&&allEv.push(...edgeById[eid].ev));
+  panelBody.innerHTML=`
+    <button class="iconbtn panel-close" data-close title="Close" aria-label="Close">${icon("close")}</button>
+    <div class="panel-kicker"><span class="sw" style="background:var(--brass)"></span>Gap ${c.id} · cluster ${esc(c.cluster)}</div>
+    <h2>${esc(c.title)}</h2>
+    <div class="sec"><div class="sec-h">The system as described</div><p class="panel-lede">${esc(c.formal)}</p></div>
+    <div class="sec"><div class="sec-h">The system as it operates</div><div class="contra-note"><p>${esc(c.observed)}</p></div></div>
+    <div class="sec"><div class="sec-h">Where it shows on the map</div><div class="link-list">${
+      c.edges.map(eid=>{const e=edgeById[eid];return e?edgeLink(e,`${esc(byId[e.from].label)} → ${esc(byId[e.to].label)}`):"";}).join("")
+      + c.nodes.map(nid=>nodeLink(nid)).join("")
+    }</div></div>
+    ${evidenceBlock(allEv)}`;
+}
+
+function renderPersona(pid){
+  const p=PERSONAS.find(x=>x.id===pid);
+  const row=(h,v)=>`<div class="sec"><div class="sec-h">${h}</div><p class="panel-lede">${esc(v)}</p></div>`;
+  panelBody.innerHTML=`
+    <button class="iconbtn panel-close" data-close title="Close" aria-label="Close">${icon("close")}</button>
+    <div class="panel-kicker"><span class="sw" style="background:var(--c-customer)">${icon("person")}</span>Persona · placeholder</div>
+    <h2>${esc(p.name)}</h2>
+    <dl class="meta"><dt>Grounded in</dt><dd>${esc(p.basis)}</dd>
+      <dt>Evidence</dt><dd><span class="strength s-${p.strength}">${p.strength}</span></dd></dl>
+    ${row("Goal",p.goal)}${row("Context",p.context)}${row("Constraints",p.constraints)}
+    ${row("Current behaviors",p.behaviors)}${row("Relationships that shape the service",p.relationships)}
+    <div class="sec"><div class="sec-h">Why this persona</div><div class="contra-note"><p>${esc(p.divergence)}</p></div></div>
+    <div class="sec"><div class="sec-h">Actors on their path</div><div class="link-list">${p.actors.map(n=>byId[n]?nodeLink(n):"").join("")}</div></div>
+    ${evidenceBlock(p.ev)}
+    <div class="caveat"><b>Placeholder.</b> Replace this entry in the <code style="font-family:'IBM Plex Mono',monospace">PERSONAS</code> array. Keep <code style="font-family:'IBM Plex Mono',monospace">actors</code> and <code style="font-family:'IBM Plex Mono',monospace">path</code> pointing at ids that exist on the map and the highlight keeps working.</div>`;
+}
+
+function select(kind,id){
+  if(kind!=="persona"){ state.persona=null; syncPersona(); }
+  if(state.selection&&state.selection.kind===kind&&state.selection.id===id&&kind!=="persona"){ clearSel(); return; }
+  state.selection={kind,id};
+  if(kind==="node") renderNode(id);
+  else if(kind==="edge") renderEdge(id);
+  else if(kind==="contra") renderContra(id);
+  else if(kind==="persona") renderPersona(id);
+  syncContra(); paint();
+  document.getElementById("panel").scrollTop=0;
+}
+function clearSel(){ state.selection=null; state.persona=null; renderEmpty(); syncContra(); syncPersona(); paint(); }
+
+/* ---------- controls ---------- */
+[["resetBtn","reset"],["themeBtn","theme"],["zoomIn","plus"],["zoomOut","minus"],["zoomFit","fit"]]
+  .forEach(([id,ic])=>{ document.getElementById(id).innerHTML=icon(ic); });
+document.getElementById("zoomIn").addEventListener("click",()=>zoomAbout({x:VB.w/2,y:VB.h/2},1.32));
+document.getElementById("zoomOut").addEventListener("click",()=>zoomAbout({x:VB.w/2,y:VB.h/2},1/1.32));
+document.getElementById("zoomFit").addEventListener("click",resetView);
+
+const typeChips=document.getElementById("typeChips");
+Object.entries(TYPES).forEach(([key,t])=>{
+  const b=document.createElement("button");
+  b.className="chip"; b.type="button"; b.setAttribute("aria-pressed","true");
+  b.style.setProperty("--sw",t.hex);
+  b.innerHTML=`<span class="sw">${icon(t.icon)}</span>${t.label}`;
+  b.addEventListener("click",()=>{
+    state.types.has(key)?state.types.delete(key):state.types.add(key);
+    b.setAttribute("aria-pressed",state.types.has(key)?"true":"false"); paint();
+  });
+  typeChips.appendChild(b);
+});
+
+const contraList=document.getElementById("contraList");
+CONTRADICTIONS.forEach(c=>{
+  const b=document.createElement("button");
+  b.type="button"; b.dataset.contra=c.id; b.setAttribute("aria-pressed","false");
+  b.innerHTML=`<span class="tag">${c.id}</span><span>${esc(c.title)}</span>`;
+  b.addEventListener("click",()=>select("contra",c.id));
+  contraList.appendChild(b);
+});
+function syncContra(){
+  contraList.querySelectorAll("button").forEach(b=>{
+    b.setAttribute("aria-pressed", state.selection&&state.selection.kind==="contra"&&state.selection.id===b.dataset.contra?"true":"false");
+  });
+}
+
+const personaList=document.getElementById("personaList");
+PERSONAS.forEach(p=>{
+  const b=document.createElement("button");
+  b.type="button"; b.className="persona-btn"; b.dataset.persona=p.id; b.setAttribute("aria-pressed","false");
+  b.innerHTML=`<span><span class="pname">${esc(p.name)}</span><span class="pmeta">from ${esc(p.basis)}<span class="strength s-${p.strength}">${p.strength}</span></span></span>`;
+  b.addEventListener("click",()=>{
+    if(state.persona===p.id){clearSel();return;}
+    state.persona=p.id; state.selection={kind:"persona",id:p.id};
+    renderPersona(p.id); syncPersona(); syncContra(); paint();
+    document.getElementById("panel").scrollTop=0;
+  });
+  personaList.appendChild(b);
+});
+function syncPersona(){
+  personaList.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",state.persona===b.dataset.persona?"true":"false"));
+}
+
+document.getElementById("modeSeg").addEventListener("click",ev=>{
+  const b=ev.target.closest("button[data-mode]"); if(!b) return;
+  state.mode=b.dataset.mode;
+  ev.currentTarget.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));
+  paint();
+});
+document.getElementById("timeSeg").addEventListener("click",ev=>{
+  const b=ev.target.closest("button[data-time]"); if(!b) return;
+  state.time=b.dataset.time;
+  ev.currentTarget.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));
+  paint();
+});
+panelBody.addEventListener("click",ev=>{
+  if(ev.target.closest("[data-close]")){clearSel();return;}
+  const n=ev.target.closest("[data-node]"); if(n){select("node",n.dataset.node);return;}
+  const e=ev.target.closest("[data-edge]"); if(e){select("edge",e.dataset.edge);return;}
+});
+document.getElementById("resetBtn").addEventListener("click",()=>{
+  state.mode="both"; state.time="all"; state.types=new Set(Object.keys(TYPES)); resetView();
+  document.querySelectorAll("#modeSeg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.mode==="both"?"true":"false"));
+  document.querySelectorAll("#timeSeg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.time==="all"?"true":"false"));
+  typeChips.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed","true"));
+  clearSel();
+});
+document.getElementById("themeBtn").addEventListener("click",()=>{
+  const cur=document.documentElement.getAttribute("data-theme");
+  const dark=cur?cur==="dark":matchMedia("(prefers-color-scheme: dark)").matches;
+  document.documentElement.setAttribute("data-theme",dark?"light":"dark");
+});
+document.addEventListener("keydown",ev=>{if(ev.key==="Escape") clearSel();});
+
+applyView();
+renderEmpty();
+paint();
+</script>
