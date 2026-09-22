@@ -135,7 +135,17 @@ button{font:inherit; color:inherit; cursor:pointer; background:none; border:none
   letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:999px;
   border:1px solid currentColor; margin-left:5px; vertical-align:1px;
 }
-.s-moderate{color:#6E8A72} .s-thin{color:#B07A3B}
+.s-moderate{color:#6E8A72} .s-thin{color:#B07A3B} .s-to-confirm{color:#B07A3B}
+.pquote{
+  font-family:"Newsreader",Georgia,serif; font-size:16px; line-height:1.45;
+  font-style:italic; color:var(--ink); margin-bottom:2px;
+}
+.plist{margin:0; padding-left:17px; font-size:12.5px; color:var(--ink-2); line-height:1.5}
+.plist li{margin-bottom:3px}
+.plist li::marker{color:var(--ink-3)}
+.rel{display:grid; grid-template-columns:auto 1fr; gap:5px 12px; margin:0; font-size:12.5px}
+.rel dt{font-weight:600; color:var(--ink); white-space:nowrap}
+.rel dd{margin:0; color:var(--ink-2); line-height:1.45}
 
 /* ---------- stage ---------- */
 .stage{
@@ -352,7 +362,7 @@ button{font:inherit; color:inherit; cursor:pointer; background:none; border:none
         <div class="grp-h">Personas</div>
         <div class="list" id="personaList"></div>
         <p style="font-size:10.5px;color:var(--ink-3);margin-top:8px;line-height:1.45">
-          Placeholder set. Replace <code style="font-family:'IBM Plex Mono',monospace;font-size:10px">PERSONAS</code> in the source.
+          Select one to light up their route through the system.
         </p>
       </div>
     </aside>
@@ -738,40 +748,53 @@ const CONTRADICTIONS = [
 ];
 
 /* ============================================================================
-   PERSONAS — PLACEHOLDER SET. Owner: teammate.
-   Keep `actors` and `path` pointing at real ids and the highlight works.
+   PERSONAS — the D1 persona set. Content authored by the persona lead;
+   `actors` and `path` are the map linkage, and `divergence` is a map-side
+   note added here for review rather than part of the original persona text.
    ==========================================================================*/
 const PERSONAS = [
-  {id:"p-regular",name:"The Daytime Regular",basis:"C1",strength:"moderate",
-   goal:"An hour of quiet that does not need managing.",
-   context:"Visits weekly, alone, during the day. Drives in. Sometimes meets a friend, more often works or reads.",
-   constraints:"Has never been in during evening service, so has no idea the room changes. Will not queue behind a crowd.",
-   behaviors:"Switches to the self-order kiosk when the counter is busy. Signed up for the loyalty program. Returns for seasonal drinks rather than for a usual.",
-   relationships:"Found the place through a friend, not a channel. Treats staff as a reliable answer desk; asks and gets helped.",
-   divergence:"Reports the hours and menus as perfectly clear — the strongest disconfirming evidence in the set. This persona never encounters the problems the other two live inside.",
-   actors:["cust-daytime","wordofmouth","kiosk","counter","seating","barista-day","callout","loyalty"],
-   path:["e12","e17","e18","e15","e19","e26","e24","e14"],
-   ev:["C1-CQ01","C1-CQ03","C1-CQ05","C1-CQ06","C1-CQ11","C1-CQ12"]},
-  {id:"p-evening",name:"The Evening Group",basis:"OB01 + secondary",strength:"thin",
-   goal:"A night out with three or four friends, seated together.",
-   context:"Arrives after 6 PM on a weekend, drawn by the look of the place and the promise of cocktails.",
-   constraints:"Cannot tell from any channel what is being served or until when. Cannot seat a group without asking staff to move furniture. Waits in a queue that blocks the room's only walkway.",
-   behaviors:"Checks the menu at the counter because there is nowhere else to check it. Asks staff whether coffee is still available. Asks to move two tables together.",
-   relationships:"Depends on staff for information the service never published, and for physical access to the room.",
-   divergence:"Every step this persona takes is a step the Daytime Regular never takes. Their Phase 2 journey is made of the four gaps the published system leaves open.",
-   actors:["cust-evening","instagram","atlcoffee","website","counter","seating","table-lights","barista-day","barista-crossover"],
-   path:["e05","e06","e16","e20","e21","e22","e27","e29","e38"],
-   ev:["OB01-E3","OB01-E4","OB01-E5","SR-A03","SR-W01","SR-J07"]},
-  {id:"p-barista",name:"The Counter Barista",basis:"S1",strength:"moderate",
-   goal:"Keep the counter moving without dropping anything, and get through a weekend shift.",
-   context:"Four months in. Daytime shifts. Opens the bar: machines, ice, three creams, matcha and hojicha bottles scaled to the day of the week.",
-   constraints:"No system holds what anyone is working on. No screen or speaker for drink-ready. Fri–Sun peaks need three people and leave no time for lunch.",
-   behaviors:"Asks before acting. Shouts drink names. Explains what is inside drinks with unfamiliar names. Clears tables so the next group can sit. Places the lights that start cocktail service.",
-   relationships:"Checks in with the kitchen by voice. Escalates to whoever has worked there longest, then to the boss.",
-   divergence:"The primary audience named in the P2 brief. This persona's pain points are invisible to both customer personas, and the fix they name themselves is a concrete Phase 3 prototype.",
-   actors:["barista-day","counter","kitchen","callout","senior-peer","boss","table-lights","center-table","shop","tablet"],
-   path:["e41","e42","e31","e33","e34","e25","e36","e37","e39","e40"],
-   ev:["S1-SQ04","S1-SQ05","S1-SQ07","S1-SQ16","S1-SQ19","S1-SQ20","S1-SQ22","S1-SQ23"]}
+  {id:"p-alex", name:"Alex", archetype:"The Study Visitor", strength:"to confirm",
+   quote:"I want a comfortable place to study and have coffee.",
+   context:"A student who visits the cafe in the afternoon to study alone.",
+   goals:["Find a seat and get some work done.",
+          "Enjoy a coffee while studying.",
+          "Know whether they can stay into the evening."],
+   constraints:["Needs a quiet place to focus.",
+                "Has a limited budget.",
+                "Needs enough table space for a laptop and a drink."],
+   behaviors:["Looks for a seat before ordering.",
+              "Brings a laptop and stays while working.",
+              "Checks with staff if the menu or seating rules change."],
+   relationships:[{who:"Staff",what:"Explain ordering and evening service rules."},
+                  {who:"Other customers",what:"Share the seating area and affect the noise level."}],
+   help:"Clear information about evening service and whether customers can keep using their tables.",
+   evidenceBase:"The project brief describes work and study visitors based on public reviews. Alex's specific habits and needs still need confirmation through interviews or survey responses.",
+   divergence:"Alex meets the changeover from the inside — already seated when the room turns over, asking whether they can stay. The shouted call-out also lands directly on Alex's need for quiet.",
+   actors:["cust-daytime","seating","counter","barista-day","callout","table-lights","kiosk","competitors","loyalty"],
+   path:["e19","e15","e26","e24","e30","e17","e18","e51","e14"],
+   ev:["C1-CQ03","C1-CQ06","C1-CQ11","SR-J06","SR-Y02","S1-SQ11","S1-SQ22"]},
+
+  {id:"p-jordan", name:"Jordan", archetype:"The Social Visitor", strength:"to confirm",
+   quote:"I want a place where my friends and I can sit together and enjoy drinks.",
+   context:"Plans an evening visit with a small group of friends.",
+   goals:["Find seats together.",
+          "Understand the drink options.",
+          "Spend time talking with friends."],
+   constraints:["Needs space for the whole group.",
+                "Depends on friends agreeing on a time and place.",
+                "May not know how evening ordering works."],
+   behaviors:["Checks the menu before choosing the cafe.",
+              "Looks for seats with friends.",
+              "Asks staff for help if seating or ordering is unclear."],
+   relationships:[{who:"Friends",what:"Help choose the cafe and decide how long to stay."},
+                  {who:"Staff",what:"Help with seating, menus, and ordering."},
+                  {who:"Other customers",what:"Share the available tables and counter space."}],
+   help:"Clear evening menus, an easy-to-find ordering point, and information about seating for groups.",
+   evidenceBase:"The project brief describes social and evening visitors and mentions limited seating for larger groups. The photo shows several occupied tables. Jordan's evening behaviors still need confirmation through real fieldwork.",
+   divergence:"Jordan meets the same changeover from the outside, deciding whether to come at all — and “checks the menu before choosing” runs straight into gap C3, where the cocktail menu exists on only one third-party site.",
+   actors:["cust-evening","counter","seating","barista-day","barista-crossover","table-lights","website","atlcoffee","chowbus"],
+   path:["e05","e06","e08","e16","e20","e21","e22","e27","e29","e38"],
+   ev:["OB01-E3","OB01-E4","OB01-E5","SR-A03","SR-O03","SR-W01","SR-J07"]}
 ];
 
 /* ========================================================================== */
@@ -1145,21 +1168,29 @@ function renderContra(id){
     ${evidenceBlock(allEv)}`;
 }
 
+function slugOf(s){ return s.replace(/\s+/g,"-").toLowerCase(); }
 function renderPersona(pid){
   const p=PERSONAS.find(x=>x.id===pid);
-  const row=(h,v)=>`<div class="sec"><div class="sec-h">${h}</div><p class="panel-lede">${esc(v)}</p></div>`;
+  const ul=items=>`<ul class="plist">${items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul>`;
   panelBody.innerHTML=`
     <button class="iconbtn panel-close" data-close title="Close" aria-label="Close">${icon("close")}</button>
-    <div class="panel-kicker"><span class="sw" style="background:var(--c-customer)">${icon("person")}</span>Persona · placeholder</div>
-    <h2>${esc(p.name)}</h2>
-    <dl class="meta"><dt>Grounded in</dt><dd>${esc(p.basis)}</dd>
-      <dt>Evidence</dt><dd><span class="strength s-${p.strength}">${p.strength}</span></dd></dl>
-    ${row("Goal",p.goal)}${row("Context",p.context)}${row("Constraints",p.constraints)}
-    ${row("Current behaviors",p.behaviors)}${row("Relationships that shape the service",p.relationships)}
-    <div class="sec"><div class="sec-h">Why this persona</div><div class="contra-note"><p>${esc(p.divergence)}</p></div></div>
+    <div class="panel-kicker"><span class="sw" style="background:var(--c-customer)">${icon("person")}</span>Persona</div>
+    <h2>${esc(p.name)} <span style="color:var(--ink-3);font-weight:400">${esc(p.archetype)}</span></h2>
+    <p class="pquote">“${esc(p.quote)}”</p>
+    <dl class="meta">
+      <dt>Context</dt><dd>${esc(p.context)}</dd>
+      <dt>Evidence</dt><dd><span class="strength s-${slugOf(p.strength)}">${esc(p.strength)}</span></dd>
+    </dl>
+    <div class="sec"><div class="sec-h">Goals</div>${ul(p.goals)}</div>
+    <div class="sec"><div class="sec-h">Constraints</div>${ul(p.constraints)}</div>
+    <div class="sec"><div class="sec-h">Current behaviors · to confirm</div>${ul(p.behaviors)}</div>
+    <div class="sec"><div class="sec-h">Key relationships</div>
+      <dl class="rel">${p.relationships.map(r=>`<dt>${esc(r.who)}</dt><dd>${esc(r.what)}</dd>`).join("")}</dl></div>
+    <div class="sec"><div class="sec-h">What would help</div><div class="contra-note"><p>${esc(p.help)}</p></div></div>
+    <div class="sec"><div class="sec-h">Evidence base</div><p class="panel-lede">${esc(p.evidenceBase)}</p></div>
+    <div class="sec"><div class="sec-h">Where they diverge · map note</div><p class="panel-lede">${esc(p.divergence)}</p></div>
     <div class="sec"><div class="sec-h">Actors on their path</div><div class="link-list">${p.actors.map(n=>byId[n]?nodeLink(n):"").join("")}</div></div>
-    ${evidenceBlock(p.ev)}
-    <div class="caveat"><b>Placeholder.</b> Replace this entry in the <code style="font-family:'IBM Plex Mono',monospace">PERSONAS</code> array. Keep <code style="font-family:'IBM Plex Mono',monospace">actors</code> and <code style="font-family:'IBM Plex Mono',monospace">path</code> pointing at ids that exist on the map and the highlight keeps working.</div>`;
+    ${evidenceBlock(p.ev)}`;
 }
 
 function select(kind,id){
@@ -1213,7 +1244,7 @@ const personaList=document.getElementById("personaList");
 PERSONAS.forEach(p=>{
   const b=document.createElement("button");
   b.type="button"; b.className="persona-btn"; b.dataset.persona=p.id; b.setAttribute("aria-pressed","false");
-  b.innerHTML=`<span><span class="pname">${esc(p.name)}</span><span class="pmeta">from ${esc(p.basis)}<span class="strength s-${p.strength}">${p.strength}</span></span></span>`;
+  b.innerHTML=`<span><span class="pname">${esc(p.name)} · ${esc(p.archetype)}</span><span class="pmeta"><span class="strength s-${slugOf(p.strength)}" style="margin-left:0">${esc(p.strength)}</span></span></span>`;
   b.addEventListener("click",()=>{
     if(state.persona===p.id){clearSel();return;}
     state.persona=p.id; state.selection={kind:"persona",id:p.id};
