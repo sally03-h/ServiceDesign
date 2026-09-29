@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journey Skeleton &amp; JTBD Inventory — Common Coffee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap">
+<style>
+:root{
+  --chrome:#E9ECEA; --chrome-2:#E0E4E1; --chrome-3:#D4D9D6;
+  --ink:#2C3133; --ink-2:#5E686A; --ink-3:#8B9597;
+  --rule:#CBD1CE; --rule-soft:#DCE1DE;
+  --stage:#F1F2F0; --stage-2:#FFFFFF;
+  --brass:#B5822C; --brass-deep:#8A611C; --brass-wash:rgba(181,130,44,.13);
+  --c-customer:#5E8A83; --c-customer-wash:rgba(124,168,162,.14);
+  --c-staff:#A6644F; --c-staff-wash:rgba(197,139,124,.16);
+  --c-customer-lite:#7CA8A2; --c-customer-lite-wash:rgba(124,168,162,.08);
+  --infer:#B5822C;
+  --shadow:0 1px 2px rgba(44,49,51,.06), 0 10px 30px rgba(44,49,51,.09);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --chrome:#1B1F20; --chrome-2:#232829; --chrome-3:#2C3234;
+    --ink:#E4E8E7; --ink-2:#A8B1B1; --ink-3:#788283;
+    --rule:#343A3B; --rule-soft:#282D2E;
+    --stage:#212525; --stage-2:#272B2C;
+    --brass:#D39A3E; --brass-deep:#E0AE58; --brass-wash:rgba(211,154,62,.16);
+    --c-customer:#7CB0A9; --c-customer-wash:rgba(124,176,169,.14);
+    --c-staff:#CF9384; --c-staff-wash:rgba(207,147,132,.16);
+    --c-customer-lite:#6C9A94; --c-customer-lite-wash:rgba(124,176,169,.08);
+    --infer:#D39A3E;
+    --shadow:0 1px 2px rgba(0,0,0,.45), 0 10px 30px rgba(0,0,0,.38);
+  }
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--chrome); color:var(--ink);
+  font-family:"Archivo","Helvetica Neue",Arial,sans-serif;
+  font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+a{color:var(--brass-deep)}
+.wrap{max-width:980px; margin:0 auto; padding:28px 20px 80px}
+
+header.top{padding:12px 20px; border-bottom:1px solid var(--rule); background:var(--chrome); display:flex; align-items:baseline; gap:14px; flex-wrap:wrap}
+header.top .brand{font-weight:600; font-size:15px}
+header.top a.back{font-family:"IBM Plex Mono",monospace; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-3); text-decoration:none}
+header.top a.back:hover{color:var(--brass-deep)}
+
+h1{font-size:26px; font-weight:700; letter-spacing:-.01em; margin:0 0 4px}
+.sub{font-family:"IBM Plex Mono",monospace; font-size:11px; text-transform:uppercase; letter-spacing:.09em; color:var(--ink-3); margin-bottom:28px}
+
+.memo{
+  background:var(--stage-2); border:1px solid var(--rule); border-left:4px solid var(--brass);
+  border-radius:6px; padding:18px 20px; margin-bottom:34px; box-shadow:var(--shadow);
+}
+.memo h2{margin:0 0 10px; font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--brass-deep)}
+.memo ul{margin:0; padding-left:20px}
+.memo li{margin-bottom:8px}
+.memo li b{color:var(--ink)}
+
+.legend{display:flex; gap:18px; flex-wrap:wrap; margin-bottom:36px; font-size:12px; color:var(--ink-2)}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.dot{width:9px; height:9px; border-radius:50%; display:inline-block}
+.dot.cited{background:var(--brass)}
+.dot.inferred{background:none; border:1.5px dashed var(--infer)}
+
+.persona{margin-bottom:56px}
+.persona-head{
+  display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  padding-bottom:14px; margin-bottom:18px; border-bottom:2px solid var(--rule);
+}
+.persona-head h2{font-size:20px; margin:0}
+.persona-head .arch{color:var(--ink-2); font-weight:400}
+.persona-head .quote{font-family:"Newsreader",serif; font-style:italic; color:var(--ink-2); max-width:360px; text-align:right}
+.tag{
+  display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:10px; text-transform:uppercase;
+  letter-spacing:.07em; padding:3px 8px; border-radius:20px; margin-top:6px;
+}
+.tag.customer{background:var(--c-customer-wash); color:var(--c-customer)}
+.tag.staff{background:var(--c-staff-wash); color:var(--c-staff)}
+.tag.light{background:var(--c-customer-lite-wash); color:var(--c-customer-lite); border:1px dashed var(--c-customer-lite)}
+
+.note{font-size:13px; color:var(--ink-2); margin-bottom:22px; max-width:760px}
+
+.phase{margin-bottom:22px}
+.phase h3{
+  font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--brass-deep);
+  margin:0 0 8px; padding-left:2px;
+}
+table.steps{width:100%; border-collapse:collapse; background:var(--stage-2); border-radius:6px; overflow:hidden; box-shadow:var(--shadow)}
+table.steps th{
+  text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-3);
+  font-weight:600; padding:9px 12px; border-bottom:1px solid var(--rule); background:var(--stage)
+}
+table.steps td{padding:11px 12px; border-bottom:1px solid var(--rule-soft); vertical-align:top; font-size:13px}
+table.steps tr:last-child td{border-bottom:none}
+table.steps td.step{font-weight:500; width:22%}
+table.steps td.jtbd{width:26%; color:var(--ink)}
+table.steps td.need{width:26%; color:var(--ink-2)}
+table.steps td.ev{width:26%; font-family:"IBM Plex Mono",monospace; font-size:11px}
+.code{
+  display:inline-block; background:var(--brass-wash); color:var(--brass-deep); border-radius:4px;
+  padding:1px 6px; margin:1px 3px 1px 0; font-size:11px;
+}
+.inferred{
+  display:inline-block; border:1px dashed var(--infer); color:var(--infer); border-radius:4px;
+  padding:1px 6px; margin:1px 3px 1px 0; font-size:10.5px; text-transform:uppercase; letter-spacing:.04em;
+}
+.contra{color:var(--ink-3); font-size:10.5px; display:block; margin-top:3px}
+
+.condensed-table{width:100%; border-collapse:collapse; background:var(--stage-2); border-radius:6px; overflow:hidden; box-shadow:var(--shadow)}
+.condensed-table th{
+  text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-3);
+  font-weight:600; padding:9px 12px; border-bottom:1px solid var(--rule); background:var(--stage)
+}
+.condensed-table td{padding:11px 12px; border-bottom:1px solid var(--rule-soft); vertical-align:top; font-size:13px}
+.condensed-table tr:last-child td{border-bottom:none}
+
+footer{margin-top:40px; padding-top:18px; border-top:1px solid var(--rule); font-size:11px; color:var(--ink-3); font-family:"IBM Plex Mono",monospace}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <span class="brand">Common Coffee &amp; Cocktails</span>
+  <a class="back" href="index.html">&larr; back to ecosystem map</a>
+</header>
+
+<div class="wrap">
+  <h1>Journey Skeleton &amp; JTBD Inventory</h1>
+  <div class="sub">P5 · Doraville GA · ID 6126 Team 7 · D1</div>
+
+  <div class="memo">
+    <h2>Thin-evidence memo</h2>
+    <ul>
+      <li><b>Alex (Study Visitor)</b> — built mainly from the general daytime-customer interview (C1) and secondary reviews, not from an interview with an actual student. The single most important step for Alex — whether they can keep their table into the evening — has <i>no</i> supporting evidence at all; nobody has asked a daytime customer this directly.</li>
+      <li><b>Sam (Counter Barista)</b> — the best-evidenced journey here (interview S1, 15 responses, plus S2 and observation OB01), but it still rests on one staff voice, self-administered by a team member. The coordination claims (cluster CL3: no handoff, seniority-based escalation) need a second, independent staff interview to confirm.</li>
+      <li><b>Jordan (Social Visitor)</b> — given a lighter pass this round by team decision, since the daytime customer and staff journeys are the priority for near-term development. Jordan's journey is the thinnest of the three: no evening customer has ever been interviewed, so it rests entirely on one observation session (OB01) and secondary site data. It is the strongest candidate for a real interview before it gets expanded further.</li>
+      <li><b>Cross-cutting gap</b> — no persona has any real post-visit data. The only "return" evidence across all three journeys is one loyalty-points mechanism and a single quote about seasonal drinks (C1-CQ12). Nobody has owner/manager-side evidence for any step that touches escalation or scheduling.</li>
+    </ul>
+  </div>
+
+  <div class="legend">
+    <span><span class="dot cited"></span> cited to a coded evidence ID (A3 repository)</span>
+    <span><span class="dot inferred"></span> inferred — awaiting confirmation</span>
+  </div>
+
+  <!-- ================= ALEX ================= -->
+  <section class="persona">
+    <div class="persona-head">
+      <div>
+        <h2>Alex <span class="arch">— The Study Visitor</span></h2>
+        <span class="tag customer">Customer · Daytime · Solo</span>
+      </div>
+      <div class="quote">"I want a comfortable place to study and have coffee."</div>
+    </div>
+    <p class="note">Scope: from choosing where to work today, through a full afternoon in the room, to the moment the coffee-to-cocktail changeover starts around them.</p>
+
+    <div class="phase">
+      <h3>1 · Deciding &amp; arriving</h3>
+      <table class="steps">
+        <tr><th>Step</th><th>Job to be done</th><th>Need it implies</th><th>Evidence</th></tr>
+        <tr>
+          <td class="step">Weighs Common against nearby cafes already known for daytime work</td>
+          <td class="jtbd">Choose a place with a track record for solo, focused work</td>
+          <td class="need">Confidence, before arriving, that the spot actually supports quiet focus</td>
+          <td class="ev"><span class="code">SR-Y02</span></td>
+        </tr>
+        <tr>
+          <td class="step">Scans the room and claims a seat before ordering</td>
+          <td class="jtbd">Secure a workspace before spending anything</td>
+          <td class="need">Available seating with enough table space for a laptop and a drink</td>
+          <td class="ev"><span class="code">C1-CQ03</span><span class="code">C1-CQ06</span><span class="code">SR-J06</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="phase">
+      <h3>2 · Ordering</h3>
+      <table class="steps">
+        <tr><th>Step</th><th>Job to be done</th><th>Need it implies</th><th>Evidence</th></tr>
+        <tr>
+          <td class="step">Orders and pays at the counter</td>
+          <td class="jtbd">Get a drink with minimal back-and-forth</td>
+          <td class="need">A quick, simple transaction</td>
+          <td class="ev"><span class="code">C1-CQ04</span></td>
+        </tr>
+        <tr>
+          <td class="step">Switches to the self-order kiosk if the counter line is long</td>
+          <td class="jtbd">Avoid losing time — and the claimed seat — standing in line</td>
+          <td class="need">A visible, sanctioned alternative to the counter during busy stretches</td>
+          <td class="ev"><span class="code">C1-CQ05</span><span class="contra">gap C4 — kiosk exists but is announced nowhere</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="phase">
+      <h3>3 · In the room</h3>
+      <table class="steps">
+        <tr><th>Step</th><th>Job to be done</th><th>Need it implies</th><th>Evidence</th></tr>
+        <tr>
+          <td class="step">Asks staff what's inside an unfamiliar drink name</td>
+          <td class="jtbd">Order confidently without guessing</td>
+          <td class="need">Clear, quick menu explanations</td>
+          <td class="ev"><span class="code">S1-SQ16</span><span class="code">S1-SQ03</span></td>
+        </tr>
+        <tr>
+          <td class="step">Listens for a shouted call-out when the drink is ready</td>
+          <td class="jtbd">Get the drink promptly without missing the call</td>
+          <td class="need">A notification that doesn't require straining to hear — and doesn't break the quiet Alex came for</td>
+          <td class="ev"><span class="code">S1-SQ22</span><span class="code">SR-J10</span><span class="contra">gap C5 — no screen or speaker exists</span></td>
+        </tr>
+        <tr>
+          <td class="step">Notices staff quietly prepping the room for the evening changeover</td>
+          <td class="jtbd">Anticipate whether the space is about to change around them</td>
+          <td class="need">Some advance signal of the transition, even if not addressed to them directly</td>
+          <td class="ev"><span class="code">S1-SQ11</span><span class="code">OB01-E2</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="phase">
+      <h3>4 · Deciding to stay or leave</h3>
+      <table class="steps">
+        <tr><th>Step</th><th>Job to be done</th><th>Need it implies</th><th>Evidence</th></tr>
+        <tr>
+          <td class="step">Wonders whether they can keep the table into the evening</td>
+          <td class="jtbd">Know whether to plan on staying or need to wrap up</td>
+          <td class="need">A stated house rule for the daytime-to-evening transition, instead of finding out by asking</td>
+          <td class="ev"><span class="inferred">inferred</span> drawn from Alex's stated help need; no direct evidence this question gets asked</td>
+        </tr>
+        <tr>
+          <td class="step">Earns loyalty points on the way out</td>
+          <td class="jtbd">Get some recognition for being a repeat customer</td>
+          <td class="need">A reason to keep choosing Common over competitors next time</td>
+          <td class="ev"><span class="code">SR-O04</span><span class="code">C1-CQ12</span></td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= SAM ================= -->
+  <section class="persona">
+    <div class="persona-head">
+      <div>
+        <h2>Sam <span class="arch">— The Counter Barista</span></h2>
+        <span class="tag staff">Staff · Daytime + weekend crossover · 4 months tenure</span>
+      </div>
+      <div class="quote">"There are no screens or speakers. We shout, and hope they hear."</div>
+    </div>
+    <p class="note">Scope: from training and opening the bar, through a full shift, into the evening changeover Sam personally triggers, to clocking out with no handoff.</p>
+
+    <div class="phase">
+      <h3>1 · Before the shift</h3>
+      <table class="steps">
+        <tr><th>Step</th><th>Job to be done</th><th>Need it implies</th><th>Evidence</th></tr>
+        <tr>
+          <td class="step">Completes training — 5 days plus a quiz on ingredients and service</td>
+          <td class="jtbd">Become capable of running the counter independently</td>
+          <td class="need">Training thorough enough to cover real customer questions</td>
+          <td class="ev"><span class="code">S1-SQ03</span></td>
+        </tr>
+        <tr>
+          <td class="step">Opens the bar — machines, ice, matcha/hojicha prep, outside area</td>
+          <td class="jtbd">Get the space ready before the first customer arrives</td>
+          <td class="need">Prep time and staffing that actually scale with the day (more needed Fri–Sun)</td>
+          <td class="ev"><span class="code">S1-SQ04</span><span class="code">S1-SQ05</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="phase">
+      <h3>2 · Running the counter</h3>
+      <table class="steps">
+        <tr><th>Step</th><th>Job to be done</th><th>Need it implies</th><th>Evidence</th></tr>
+        <tr>
+          <td class="step">Checks verbally with a colleague before acting on an order</td>
+          <td class="jtbd">Avoid missing a drink or a special request</td>
+          <td class="need">A way to track what's in progress that doesn't rely purely on memory</td>
+          <td class="ev"><span class="code">S1-SQ07</span><span class="contra">gap C6 — no coordination system</span></td>
+        </tr>
+        <tr>
+          <td class="step">Escalates a question to whichever colleague has worked there longest, then to the owner if needed</td>
+          <td class="jtbd">Resolve what's outside personal authority</td>
+          <td class="need">A defined escalation path, not just seniority by default</td>
+          <td class="ev"><span class="code">S1-SQ20</span><span class="code">S2-SQ20</span></td>
+        </tr>
+        <tr>
+          <td class="step">Explains what's inside an unfamiliar drink when asked</td>
+          <td class="jtbd">Help the customer order with confidence</td>
+          <td class="need">Product knowledge that's actually usable in the moment</td>
+          <td class="ev"><span class="code">S1-SQ16</span></td>
+        </tr>
+        <tr>
+          <td class="step">Shouts a customer's order across the room when it's ready</td>
+          <td class="jtbd">Get the drink to the right person</td>
+          <td class="need">A screen or speaker instead of relying on voice and volume</td>
+          <td class="ev"><span class="code">S1-SQ22</span><span class="code">S1-SQ23</span><span class="contra">gap C5 — staff's own proposed fix</span></td>
+        </tr>
+        <tr>
+          <td class="step">Clears and resets tables so new arrivals can sit</td>
+          <td class="jtbd">Keep the room turning over during busy stretches</td>
+          <td class="need">Enough hands to bus tables during peaks, not just serve the counter</td>
+          <td class="ev"><span class="code">OB01-E2</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="phase">
+      <h3>3 · Triggering the evening changeover</h3>
+      <table class="steps">
+        <tr><th>Step</th><th>Job to be done</th><th>Need it implies</th><th>Evidence</th></tr>
+        <tr>
+          <td class="step">Places the small table lights that mark the start of cocktail service</td>
+          <td class="jtbd">Physically trigger the coffee-to-cocktail changeover</td>
+          <td class="need">A stated changeover time — none currently exists anywhere in the system</td>
+          <td class="ev"><span class="code">S1-SQ08</span><span class="contra">gap C1 — no channel names a time</span></td>
+        </tr>
+        <tr>
+          <td class="step">Moves alcohol and cocktail supplies to the staging table before service</td>
+          <td class="jtbd">Have cocktail ingredients ready before the first evening order</td>
+          <td class="need">Enough lead time in the schedule to prep without falling behind on coffee service</td>
+          <td class="ev"><span class="code">S1-SQ08</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="phase">
+      <h3>4 · End of shift</h3>
+      <table class="steps">
+        <tr><th>Step</th><th>Job to be done</th><th>Need it implies</th><th>Evidence</th></tr>
+        <tr>
+          <td class="step">Clocks out on the tablet</td>
+          <td class="jtbd">Log hours worked accurately</td>
+          <td class="need">A working timekeeping system — the one digital system that exists</td>
+          <td class="ev"><span class="code">S1-SQ04</span></td>
+        </tr>
+        <tr>
+          <td class="step">Leaves without a formal handoff to the next shift</td>
+          <td class="jtbd">Pass on anything unresolved so it isn't dropped</td>
+          <td class="need">Any handoff mechanism at all — currently there isn't one</td>
+          <td class="ev"><span class="code">S1-SQ09</span><span class="contra">"Not really." — gap C6</span></td>
+        </tr>
+        <tr>
+          <td class="step">Gets paid: $10/hr training, $12/hr after, tied to the 5-day track</td>
+          <td class="jtbd">Be compensated fairly for the training already completed</td>
+          <td class="need">Pay progression that matches skill actually gained on the job</td>
+          <td class="ev"><span class="code">S1-SQ03</span></td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= JORDAN (condensed) ================= -->
+  <section class="persona">
+    <div class="persona-head">
+      <div>
+        <h2>Jordan <span class="arch">— The Social Visitor</span></h2>
+        <span class="tag light">Customer · Evening · Group — condensed pass</span>
+      </div>
+      <div class="quote">"I want a place where my friends and I can sit together and enjoy drinks."</div>
+    </div>
+    <p class="note">De-prioritized for this round by team decision — Alex and Sam are the near-term focus. Kept at phase level rather than full step-level detail; the full path (exchanges e08, e16, e21, e38 in the ecosystem map) is still available to expand later.</p>
+    <table class="condensed-table">
+      <tr><th>Phase</th><th>Representative step</th><th>Job to be done / need</th><th>Evidence</th></tr>
+      <tr>
+        <td><b>Deciding</b></td>
+        <td>Checks the cocktail menu before choosing where to bring the group</td>
+        <td>Confirm the group can get what it wants before committing to a place</td>
+        <td><span class="code">SR-A03</span><span class="contra">gap C3 — menu exists on one third-party site only</span></td>
+      </tr>
+      <tr>
+        <td><b>Arriving &amp; ordering</b></td>
+        <td>Asks staff to move tables together, then asks whether coffee is still available while paying</td>
+        <td>Seat the whole group together and know what's actually on offer</td>
+        <td><span class="code">OB01-E4</span><span class="code">OB01-E3</span><span class="contra">gap C1</span></td>
+      </tr>
+      <tr>
+        <td><b>In the room</b></td>
+        <td>Learns the service has changed only when a staff member explains the table lights, if asked</td>
+        <td>Know the offering changed without having to ask</td>
+        <td><span class="code">S1-SQ08</span><span class="code">SR-W01</span><span class="contra">gap C1 — no channel states a changeover time</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <footer>
+    P5 · Journey Skeleton &amp; JTBD Inventory · evidence codes reference the A3 coded evidence repository embedded in <a href="index.html">index.html</a>
+  </footer>
+</div>
+</body>
+</html>
