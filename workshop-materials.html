@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workshop Materials — Common Coffee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap">
+<link rel="stylesheet" href="workshop.css">
+</head>
+<body>
+<header class="top">
+  <span class="brand">Common Coffee &amp; Cocktails</span>
+  <a href="workshop.html">&larr; workshop design pack</a>
+  <a class="here" href="workshop-materials.html">printable materials</a>
+  <a href="index.html">ecosystem map</a>
+  <a href="journey.html">journey map</a>
+  <a href="#" onclick="window.print();return false" style="margin-left:auto">print this page</a>
+</header>
+
+<div class="wrap">
+  <h1>Workshop Materials</h1>
+  <div class="sub">P10 · printables rendered from workshop-data.js + the A3 evidence base · every quote is pulled from the evidence by ID</div>
+
+  <p class="lede">Print on A4 or letter, one section per sheet group. Dashed card borders mean the card is <b>not</b> evidence: it is either an <b>inference</b> (brass) or a facilitation <b>device</b> (grey). Solid borders are evidence-backed. Role briefs are facilitator-verified, not participant-written: see the AI practice log in the design pack for how.</p>
+
+  <div class="toc">
+    <a href="#timeline">1 · Timeline wall</a>
+    <a href="#gallery">2 · Evidence gallery</a>
+    <a href="#briefs">3 · Role briefs</a>
+    <a href="#cards">4 · HMW, constraint, scenario, curveball cards</a>
+    <a href="#commit">5 · Commitment cards</a>
+    <a href="#capture">6 · Capture sheets</a>
+    <a href="#consent">7 · Consent script</a>
+  </div>
+
+  <div id="out"></div>
+</div>
+
+<script src="workshop-evidence.js"></script>
+<script src="workshop-data.js"></script>
+<script>
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const q = id => EVIDENCE[id];
+const chips = ids => ids.map(i => `<span class="code">${esc(i)}</span>`).join("");
+
+const evCard = id => {
+  const e = q(id);
+  return `<div class="pc"><div class="hd"><span class="id">${esc(id)}</span><span class="src">${esc(e.date)}</span></div>
+    <div class="big">${esc(e.what)}</div><div class="q">“${esc(e.quote)}”</div>
+    <div class="foot">${esc(e.src)}</div></div>`;
+};
+
+const parts = [];
+
+/* 1 — timeline wall ------------------------------------------------------ */
+parts.push(`<section class="block" id="timeline"><div class="num">1 · boundary object</div>
+<h2>Changeover timeline wall</h2>
+<p class="note">Print at A1, or tile on four A3 sheets. The seven moments are the current-state journey from the P5 skeleton, cut down to the coffee-to-cocktail changeover. Three persona lanes are left blank on purpose: participants pin friction into them in A3. Facilitators' priors are <b>not</b> printed here.</p>
+<div class="wall"><div class="moments">${WS.moments.map(m => `
+  <div class="m"><b>${m.id} · ${esc(m.title)}</b>${esc(m.now)}<div style="margin-top:6px">${chips(m.ev.slice(0,3))}${m.inferred ? '<span class="tag inferred">inferred</span>' : ''}</div></div>`).join("")}</div>
+  <div class="lanelabel">Customer lane — Alex / Jordan / First-timer · friction pins</div>
+  <div class="lane">${WS.moments.map(()=>"<div></div>").join("")}</div>
+  <div class="lanelabel">Staff lane — Sam / Crossover · friction pins</div>
+  <div class="lane">${WS.moments.map(()=>"<div></div>").join("")}</div>
+  <div class="lanelabel">Owner lane — what this moment asks of the owner</div>
+  <div class="lane">${WS.moments.map(()=>"<div></div>").join("")}</div>
+</div></section>`);
+
+/* 2 — evidence gallery --------------------------------------------------- */
+parts.push(`<section class="block pagebreak" id="gallery"><div class="num">2 · boundary object</div>
+<h2>Evidence gallery — six stations</h2>
+<p class="note">Post each station's header card above its evidence cards. Participants carry two sticker types: <b>“Ouch”</b> (this hurts my role) and <b>“?”</b> (what this does not tell me). The “?” stickers are the evidence gaps the session found.</p>
+${WS.stations.map(s => `
+  <h3 class="sheet-title">${s.id} · ${esc(s.title)} <span style="color:var(--ink-3)">(${esc(s.moment)})</span></h3>
+  <div class="cards"><div class="pc device"><div class="hd"><span class="id">${s.id}</span><span class="src">station header</span></div>
+    <div class="big">${esc(s.title)}</div><div>${esc(s.prompt)}</div><div class="foot">${s.ev.length} evidence cards below</div></div>
+    ${s.ev.map(evCard).join("")}</div>`).join("")}
+</section>`);
+
+/* 3 — role briefs -------------------------------------------------------- */
+const strengthTag = r => r.strength === "none" ? '<span class="tag thin">no direct evidence</span>' : r.strength === "thin" ? '<span class="tag thin">thin evidence</span>' : '<span class="tag draft">single source</span>';
+const basisLabel = {assigned:"ASSIGNED for the exercise — not evidence", evidence:"Derived from the cited evidence", "persona behaviour":"Derived from the persona's stated behaviour (persona is marked “to confirm”)"};
+parts.push(`<section class="block pagebreak" id="briefs"><div class="num">3 · speculative-track role briefs</div>
+<h2>Role briefs</h2>
+<p class="note">One per persona or actor, each citing its sources. Participants may only state as fact what the brief lists. Anything else is improvised: say it, then drop an <b>IMPROV</b> slip on the table. IMPROV statements enter synthesis as hypotheses, never as evidence.</p>
+${WS.roles.map(r => {
+  const ids = [...new Set(r.knows.flatMap(k => k.ev))];
+  return `<div class="brief">
+  <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><h2>${esc(r.name)} <span class="arch">— ${esc(r.arch)}</span></h2>
+  <span class="tag ${r.type}">${r.type}</span>${strengthTag(r)}</div><div class="small" style="max-width:300px;text-align:right">${esc(r.source)}</div></div>
+  <p style="margin:10px 0 0">${esc(r.context)}</p>
+  <h4>What you know — all you may state as fact</h4>
+  <ul>${r.knows.map(k => `<li>${esc(k.t)} ${chips(k.ev)}</li>`).join("")}</ul>
+  <h4>Your starting position</h4>
+  <div class="stance">${esc(r.stance.text)}<div class="small" style="margin-top:4px">${esc(basisLabel[r.stance.basis] || r.stance.basis)}</div></div>
+  <h4>What the evidence does not tell you</h4>
+  <div class="unknown"><ul>${r.unknown.map(u => `<li>${esc(u)}</li>`).join("")}</ul></div>
+  <h4>Sources</h4>
+  <div class="small">${ids.map(id => `<div style="margin-bottom:5px"><span class="code">${esc(id)}</span> <i>${esc(q(id).src)}, ${esc(q(id).date)}.</i> “${esc(q(id).quote)}”</div>`).join("")}</div>
+  </div>`;}).join("")}
+<div class="cards" style="margin-top:14px"><div class="pc device"><div class="hd"><span class="id">IMPROV</span><span class="src">print ×30</span></div><div class="big">IMPROV</div><div>I am saying something that is not on my role brief. Treat it as a hypothesis.</div></div></div>
+</section>`);
+
+/* 4 — generative cards --------------------------------------------------- */
+const basisCls = b => b === "evidence" ? "" : b === "inference" ? "inferred" : "device";
+parts.push(`<section class="block pagebreak" id="cards"><div class="num">4 · stimulus</div>
+<h2>How-might-we prompts</h2>
+<div class="cards">${WS.hmw.map(h => `<div class="pc device"><div class="hd"><span class="id">${h.id}</span><span class="src">${esc(h.moments)}</span></div><div class="big">${esc(h.text)}</div><div class="foot">Derived from gaps C1, C6 and the unevidenced stay-or-go question. Prompt, not evidence.</div></div>`).join("")}</div>
+
+<h2 class="sheet-title">Constraint cards</h2>
+<p class="note">Drawn in A4, one per pair. Brass-dashed = an inference the evidence only partly supports; the card says which part.</p>
+<div class="cards">${WS.constraints.map(k => `<div class="pc ${basisCls(k.basis)}"><div class="hd"><span class="id">${k.id}</span><span class="src">${esc(k.basis)}</span></div>
+  <div class="big">${esc(k.title)}</div><div><b>${esc(k.rule)}</b></div><div class="small">${esc(k.why)}</div>
+  ${k.note ? `<div class="small" style="color:var(--warn)">${esc(k.note)}</div>` : ""}<div class="foot">${chips(k.ev)}</div></div>`).join("")}</div>
+
+<h2 class="sheet-title">Scenario cards (staging, A5)</h2>
+<div class="cards">${WS.scenarios.map(s => `<div class="pc ${s.kind === "inferred" ? "inferred" : ""}"><div class="hd"><span class="id">${s.id}</span><span class="src">${s.kind}</span></div>
+  <div class="big">${esc(s.title)}</div><div>${esc(s.setup)}</div>${s.note ? `<div class="small" style="color:var(--warn)">${esc(s.note)}</div>` : ""}<div class="foot">${s.ev.length ? chips(s.ev) : "no evidence ID — inferred"}</div></div>`).join("")}</div>
+
+<h2 class="sheet-title">Curveball cards (facilitator's hand)</h2>
+<div class="cards">${WS.curveballs.map(c => `<div class="pc device"><div class="hd"><span class="id">${c.id}</span><span class="src">device</span></div><div class="big">${esc(c.text)}</div><div class="foot">Not evidence. Tests whether an idea survives a bad hour.</div></div>`).join("")}</div>
+</section>`);
+
+/* 5 — commitment cards --------------------------------------------------- */
+parts.push(`<section class="block pagebreak" id="commit"><div class="num">5 · converge and commit</div>
+<h2>Commitment cards — print ×4 (three moments plus a spare)</h2>
+<div class="sheet"><b>Moment:</b> ____ &nbsp;·&nbsp; <b>Redesign direction</b> (one sentence)<div class="lines"></div><div class="lines"></div>
+<table><tr><th style="width:25%">Owner (a role in this room, not “we”)</th><th style="width:25%">Owner says</th><th>First check, within two weeks</th></tr>
+<tr><td class="fill"></td><td class="fill">☐ yes &nbsp; ☐ yes, if … &nbsp; ☐ no, because …</td><td class="fill"></td></tr></table>
+<table><tr><th style="width:50%">What would show this is wrong?</th><th>Assumptions it needs (from the grid)</th></tr><tr><td class="fill" style="height:56px"></td><td class="fill"></td></tr></table></div>
+
+<div class="sheet"><b>Assumption grid (A6)</b> — draw on flip-chart. Across: how sure are we this is true, by the evidence gallery? (unsure → sure). Up: how much does the idea fail if it is wrong? (low → critical).
+<table><tr><th style="width:50%">Critical + unsure — <i>evidence cannot carry this</i></th><th>Critical + sure</th></tr><tr><td class="fill" style="height:70px"></td><td class="fill"></td></tr>
+<tr><th>Not critical + unsure</th><th>Not critical + sure</th></tr><tr><td class="fill" style="height:70px"></td><td class="fill"></td></tr></table></div>
+
+<div class="sheet"><b>Anonymous dissent slip (A6) — print ×6 per moment</b><table><tr><th>Moment</th><th>1 (block) … 5 (champion)</th><th>What would make you say no?</th></tr><tr><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr></table></div>
+<div class="sheet"><b>“What I didn't get to say” slip (A7) — print ×6</b><div class="lines"></div><div class="lines"></div></div>
+</section>`);
+
+/* 6 — capture sheets ----------------------------------------------------- */
+const rows = n => Array.from({length:n}, () => "<tr>" + "<td class='fill'></td>".repeat(5) + "</tr>").join("");
+parts.push(`<section class="block pagebreak" id="capture"><div class="num">6 · capture</div>
+<h2>Capture sheets — for whoever is not leading the activity</h2>
+<div class="sheet"><b>Run log + adaptation log</b> <span class="small">Start/stop every activity. Any change from the plan gets a row: what, why, what rule from the contingency table (or none), what it cost.</span>
+<table><tr><th>Activity</th><th>Planned</th><th>Actual start–end</th><th>Changed? what / why / rule used</th><th>What we lost or gained</th></tr>
+${WS.agenda.filter(a=>a.kind!=="b").map(a => `<tr><td>${a.id} ${esc(a.title)}</td><td class="time">${String(Math.floor(a.start/60))}:${String(a.start%60).padStart(2,"0")} +${a.mins}</td><td class="fill"></td><td class="fill"></td><td class="fill"></td></tr>`).join("")}</table></div>
+
+<div class="sheet"><b>Raw output index</b> <span class="small">Every output gets an ID the moment it exists: <b>${WS.rawOutputKinds.map(k => k.p).join(" · ")}</b> + number (e.g. D-07). Photograph walls before anyone clears them. Synthesis cites these IDs, never paraphrases.</span>
+<table><tr><th style="width:9%">ID</th><th>Output (verbatim)</th><th style="width:14%">Role</th><th style="width:14%">Moment</th><th style="width:16%">Photo / file</th></tr>${rows(10)}</table>
+<div class="small" style="margin-top:6px">${WS.rawOutputKinds.map(k => `<b>${k.p}</b> ${esc(k.label)}`).join(" &nbsp;·&nbsp; ")}</div></div>
+
+<div class="sheet"><b>Voice and deference observer</b> <span class="small">Tally speaking turns per role per activity. Mark each time a staff role defers to the Owner ("D") or an IMPROV slip is dropped ("I"). No names, roles only.</span>
+<table><tr><th>Role</th>${["A2","A3","A4","A5","A6"].map(a=>`<th>${a} turns</th>`).join("")}<th>D</th><th>I</th></tr>
+${WS.roles.map(r => `<tr><td>${esc(r.name)}</td>${"<td class='fill'></td>".repeat(7)}</tr>`).join("")}</table></div>
+
+<div class="sheet"><b>Staging breakdown log (A5)</b>
+<table><tr><th>Scenario</th><th>Idea tested</th><th>Where it broke (verbatim)</th><th>Who noticed</th><th>Fix tried</th></tr>${rows(6)}</table></div>
+</section>`);
+
+/* 7 — consent ------------------------------------------------------------ */
+parts.push(`<section class="block pagebreak" id="consent"><div class="num">7 · consent</div>
+<h2>Consent script and sheet</h2>
+<div class="sheet"><p class="quote" style="font-size:15.5px">“This is a ninety-minute workshop for a class project on the Common Coffee &amp; Cocktails service. We are testing ideas, not you. Each of you is playing a role built from our research; you can step out of the role at any time by saying ‘as myself’. We would like to photograph the boards and our hands working on them, and to record audio so we can check our notes. Faces are not photographed unless you say so. You can say no to either, say yes to one, or change your mind at any point, and it will not affect anything. Recordings stay with the team and are deleted after the course. If you want anything you said removed from our write-up, tell us by the end of today.”</p>
+<table><tr><th>Name (or initials)</th><th>Role played</th><th>Photos of boards</th><th>Photos with my hands</th><th>Photos with my face</th><th>Audio</th></tr>
+${WS.roles.map(r => `<tr><td class="fill"></td><td>${esc(r.name)}</td>${"<td class='fill'>☐ yes ☐ no</td>".repeat(4)}</tr>`).join("")}</table>
+<p class="small">If a participant declines audio, record nothing and capture by hand. Do not ask twice. For direct-engagement participants (real staff or customers), add that their staff hours are not an evaluation of their work.</p></div>
+</section>`);
+
+document.getElementById("out").innerHTML = parts.join("\n");
+</script>
+</body>
+</html>
