@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To-Be Journey Map — Common Coffee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap">
+<link rel="stylesheet" href="tobe.css">
+</head>
+<body>
+
+<header class="top">
+  <span class="brand">Common Coffee &amp; Cocktails</span>
+  <a href="index.html">&larr; ecosystem map</a>
+  <a href="journey.html">as-is journey skeleton</a>
+  <a href="tobe-slides.html">intermediate slides &rarr;</a>
+</header>
+
+<div class="wrap">
+  <div class="intro">
+    <h1>To-Be Journey Map</h1>
+    <div class="sub">P11a · Doraville GA · ID 6126 Team 7</div>
+    <p class="lede" id="lede"></p>
+  </div>
+
+  <div class="memo">
+    <h2>How to read this map</h2>
+    <ul>
+      <li><b>The to-be is a proposal.</b> Nothing here has been tested with customers or staff. Each phase says how sure we are of the problem it answers: <span class="chip cited">cited</span> the problem is evidenced; <span class="chip inferred">inferred</span> the problem itself is assumed; <span class="chip hypothesis">hypothesis</span> the fix has a known tension.</li>
+      <li><b>The as-is comes from our P5 skeleton and the seven gaps (C1–C7)</b> on the ecosystem map. Evidence codes resolve to the A3 repository in <a href="index.html">index.html</a>.</li>
+      <li><b>Emotion scores are team estimates</b> on a 1–5 scale, not measurements. We have no post-visit data for any persona.</li>
+      <li id="pnote"></li>
+    </ul>
+  </div>
+
+  <div class="legend">
+    <span><span class="chip new">new</span> new touchpoint</span>
+    <span><span class="chip changed">changed</span> existing touchpoint, changed</span>
+    <span><span class="chip existing">existing</span> unchanged</span>
+    <span><span class="flag" style="position:static;width:20px;height:20px;font-size:11px">1</span> moment of impact</span>
+    <span><span class="chip type">Process</span> one of the 10 Types of Innovation</span>
+  </div>
+
+  <div class="mapwrap" tabindex="0" aria-label="To-be journey map, scrolls horizontally"><div class="map" id="map"></div></div>
+
+  <h2 class="sec">Moments of impact</h2>
+  <p class="secsub">Four places where the experience changes most. They are numbered on the map. Each one names what we would look at to know it worked.</p>
+  <div class="moments" id="moments"></div>
+
+  <h2 class="sec">Concepts</h2>
+  <p class="secsub">The moments group into three concepts, tagged with the 10 Types of Innovation framework.</p>
+  <div class="concepts" id="concepts"></div>
+
+  <h2 class="sec">Jordan, the Social Visitor — phase level</h2>
+  <p class="secsub">Jordan received a lighter pass in P5 and no evening customer has been interviewed, so this stays at phase level.</p>
+  <table class="t" id="jordan"></table>
+
+  <h2 class="sec">What could go wrong</h2>
+  <div class="risks" id="risks"></div>
+
+  <footer>P11a · To-Be Journey Map · built from tobe-data.js · evidence codes reference the A3 repository embedded in <a href="index.html">index.html</a></footer>
+</div>
+
+<script src="tobe-data.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const codes = a => a.map(x => `<span class="code">${esc(x)}</span>`).join("");
+const types = a => a.map(x => `<span class="chip type">${esc(x)}</span>`).join(" ");
+const status = s => `<span class="chip ${s}">${s}</span>`;
+const P = TB.phases;
+
+$("lede").innerHTML = `${esc(TB.persona.name)}, ${esc(TB.persona.arch.toLowerCase())}, starts the day deciding where to work and ends it knowing whether they can come back. <i>${esc(TB.persona.quote)}</i>`;
+$("pnote").innerHTML = `<b>Scope.</b> ${esc(TB.persona.note)}`;
+
+/* ---- build the grid ---- */
+let h = "";
+const row = (laneHtml, laneCls, cellFn, cls="") => {
+  h += `<div class="cell lane ${laneCls}">${laneHtml}</div>`;
+  P.forEach(p => h += `<div class="cell ${cls}">${cellFn(p)}</div>`);
+};
+// time band
+h += `<div class="cell lane" style="padding:5px 12px"></div>`;
+P.forEach(p => h += `<div class="time t-${p.time}">${p.time === "before" ? "Before the visit" : p.time === "during" ? "During the visit" : "After the visit"}</div>`);
+// phase header
+h += `<div class="cell lane">Phase</div>`;
+P.forEach(p => h += `<div class="cell phase-h ${flagFor(p) ? "moi" : ""}"><div class="pid">${p.id}</div><h3>${esc(p.name)}</h3><div class="q">${esc(p.sub)}</div>${flagFor(p)}</div>`);
+function flagFor(p){ const m = TB.moments.find(m => m.phase === p.id); return m ? `<span class="flag" title="Moment of impact ${m.n}">${m.n}</span>` : ""; }
+
+row(`Alex does<small>to-be</small>`, "front", p => esc(p.does));
+row(`Touchpoints`, "front", p => `<div class="touch">${p.touch.map(t => `<div><span class="chip ${t.n}">${t.n}</span> ${esc(t.t)}</div>`).join("")}</div>`);
+
+// emotion row
+const W = P.length;
+const xPct = i => ((i + .5) / W) * 100;
+const yPct = v => (1 - (v - 1) / 4) * 100;
+const pts = k => P.map((p, i) => `${(xPct(i)).toFixed(2)},${yPct(p.emo[k]).toFixed(2)}`).join(" ");
+h += `<div class="cell lane emolane front">Emotional flow<small>1 low · 5 high. Team estimate, not measured.</small></div>`;
+h += `<div class="cell emo"><div class="plot">`
+  + [1,2,3,4,5].map(v => `<div class="grid" style="top:${yPct(v)}%"></div><span class="ylab" style="top:calc(${yPct(v)}% - 6px)">${v}</span>`).join("")
+  + P.map((p, i) => flagFor(p) ? `<div class="moi-band" style="left:${i/W*100}%;width:${100/W}%"></div>` : "").join("")
+  + `<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+       <polyline points="${pts(0)}" fill="none" stroke="var(--asis)" stroke-width="2" stroke-dasharray="5 4" vector-effect="non-scaling-stroke"/>
+       <polyline points="${pts(1)}" fill="none" stroke="var(--customer)" stroke-width="3" vector-effect="non-scaling-stroke"/>
+     </svg>`
+  + P.map((p, i) => `<div class="dot a" style="left:${xPct(i)}%;top:${yPct(p.emo[0])}%" title="as-is ${p.emo[0]}"></div><div class="dot t" style="left:${xPct(i)}%;top:${yPct(p.emo[1])}%" title="to-be ${p.emo[1]}"></div>`).join("")
+  + `</div><div class="keyline"><span><i style="border-top:2px dashed var(--asis)"></i>as-is</span><span><i style="border-top:3px solid var(--customer)"></i>to-be</span></div></div>`;
+
+row(`As-is pain points<small>from P5 and the gaps</small>`, "front", p => `<div class="pain">${p.pain.map(x => `<div class="item"><span class="chip gap">${esc(x.g)}</span>${esc(x.t)}</div>`).join("")}</div>`, "pain");
+row(`To-be change<small>proposed</small>`, "front", p => `<b>${status(p.status)}</b>`.replace("<b>","<b style='display:block;margin-bottom:5px'>") + esc(p.change), "change");
+row(`Sam, backstage<small>counter barista · and the owner</small>`, "back backs", p => esc(p.back), "backcell");
+row(`Other services &amp; providers`, "", p => `<span class="small">${esc(p.others)}</span>`);
+row(`Innovation type<small>10 Types</small>`, "", p => types(p.types));
+row(`Evidence`, "", p => `<span class="ev-row">${codes(p.ev)}</span>`);
+$("map").innerHTML = h;
+
+/* ---- moments ---- */
+$("moments").innerHTML = TB.moments.map(m => {
+  const ph = P.find(p => p.id === m.phase);
+  return `<article class="mcard">
+    <div class="row"><span class="num">${m.n}</span><span class="chip gap">${m.phase} · ${esc(ph.name)}</span>${status(m.status)}</div>
+    <h3>${esc(m.title)}</h3>
+    <p class="shift">${esc(m.shift)}</p>
+    <dl>
+      <div><dt>Why it matters</dt><dd>${esc(m.why)}</dd></div>
+      <div><dt>How we would know</dt><dd>${esc(m.measure)}</dd></div>
+      <div><dt>Gaps and evidence</dt><dd>${m.gaps.map(g => `<span class="chip gap">${g}</span>`).join(" ")} ${codes(m.ev)}</dd></div>
+    </dl></article>`;
+}).join("");
+
+/* ---- concepts ---- */
+$("concepts").innerHTML = TB.concepts.map(c => `<article class="ccard">
+  <div class="k">Concept ${c.k} · ${esc(c.moments)}</div><h3>${esc(c.title)}</h3><p>${esc(c.body)}</p>
+  <div class="row">${c.gaps.map(g => `<span class="chip gap">${g}</span>`).join("")} ${types(c.types)}</div></article>`).join("");
+
+/* ---- jordan ---- */
+$("jordan").innerHTML = `<tr><th>Phase</th><th>As-is</th><th>To-be</th><th>Evidence</th></tr>` + TB.jordan.map(j =>
+  `<tr><td><b>${esc(j.phase)}</b></td><td>${esc(j.asis)}</td><td>${esc(j.tobe)}</td><td>${codes(j.ev)}</td></tr>`).join("");
+
+/* ---- risks ---- */
+$("risks").innerHTML = TB.risks.map(r => `<div class="risk"><b>${esc(r.t)}</b><span class="small">${esc(r.d)}</span> <span class="chip ${r.basis === "evidence" ? "cited" : "inferred"}">${r.basis}</span></div>`).join("");
+</script>
+</body>
+</html>

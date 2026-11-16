@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To-Be Journey — Intermediate Presentation — Common Coffee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap">
+<link rel="stylesheet" href="tobe.css">
+<style>
+html{scroll-snap-type:y mandatory; scroll-behavior:smooth}
+.slide{min-height:100vh; scroll-snap-align:start; padding:7vh 7vw 9vh; display:flex; flex-direction:column; justify-content:center; border-bottom:1px solid var(--rule); position:relative}
+.slide .eyebrow{font-family:"IBM Plex Mono",monospace; font-size:12px; text-transform:uppercase; letter-spacing:.1em; color:var(--brass-deep); margin-bottom:10px}
+.slide h2{font-size:clamp(26px,3.6vw,44px); font-weight:700; letter-spacing:-.015em; line-height:1.1; margin-bottom:18px; max-width:20ch}
+.slide.wide h2{max-width:28ch}
+.slide .big{font-family:"Newsreader",serif; font-size:clamp(20px,2.4vw,30px); line-height:1.35; max-width:34ch}
+.slide .body{max-width:1100px}
+.num{position:absolute; right:3vw; bottom:3vh; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3)}
+.hint{position:fixed; right:14px; top:10px; font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--ink-3); z-index:5}
+.title h1{font-size:clamp(34px,5.4vw,68px); max-width:16ch; line-height:1.04; margin-bottom:16px}
+.cols{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-top:6px}
+.stat{background:var(--card); border:1px solid var(--rule); border-radius:6px; padding:14px 16px}
+.stat b{display:block; font-size:30px; letter-spacing:-.02em}
+.stat span{color:var(--ink-2); font-size:13px}
+.strip{display:grid; grid-template-columns:repeat(6,1fr); gap:0; position:relative; margin-top:14px}
+.strip .ph{padding:10px 8px; border-right:1px solid var(--rule-soft); font-size:12.5px; background:var(--card)}
+.strip .ph:last-child{border-right:none}
+.strip .ph.m{background:var(--brass-wash); box-shadow:inset 0 3px 0 var(--brass)}
+.strip .ph b{display:block; font-size:14px}
+.strip .ph i{font-family:"Newsreader",serif; color:var(--ink-2)}
+.chartbox{position:relative; height:240px; background:var(--card); border:1px solid var(--rule); border-top:none}
+.chartbox .plot{position:absolute; inset:14px 0 14px 0}
+.chartbox svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible}
+.chartbox .grid{position:absolute; left:0; right:0; border-top:1px dashed var(--rule)}
+.chartbox .ylab{position:absolute; left:6px; font-size:10px; color:var(--ink-3); font-family:"IBM Plex Mono",monospace}
+.chartbox .dot{position:absolute; width:12px; height:12px; margin:-6px 0 0 -6px; border-radius:50%}
+.chartbox .dot.a{background:var(--card); border:2px solid var(--asis)}
+.chartbox .dot.t{background:var(--customer); border:2px solid var(--card); box-shadow:0 0 0 1px var(--customer)}
+.chartbox .moi-band{position:absolute; top:0; bottom:0; background:var(--brass-wash)}
+.mini .mcard{padding:14px}
+@media print{.slide{min-height:auto; height:100vh; page-break-after:always} .hint{display:none} html{scroll-snap-type:none}}
+</style>
+</head>
+<body>
+<div class="hint">← → or space to move · print to PDF for handouts</div>
+<main id="deck"></main>
+
+<script src="tobe-data.js"></script>
+<script>
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const codes = a => a.map(x => `<span class="code">${esc(x)}</span>`).join("");
+const types = a => a.map(x => `<span class="chip type">${esc(x)}</span>`).join(" ");
+const gaps = a => a.map(g => `<span class="chip gap">${g}</span>`).join(" ");
+const status = s => `<span class="chip ${s}">${s}</span>`;
+const P = TB.phases, W = P.length;
+const xPct = i => ((i + .5) / W) * 100, yPct = v => (1 - (v - 1) / 4) * 100;
+const pts = k => P.map((p, i) => `${xPct(i).toFixed(2)},${yPct(p.emo[k]).toFixed(2)}`).join(" ");
+const momOf = p => TB.moments.find(m => m.phase === p.id);
+
+const chart = `
+<div class="strip">${P.map(p => { const m = momOf(p); return `<div class="ph ${m ? "m" : ""}"><b>${m ? m.n + " · " : ""}${esc(p.name)}</b><i>${esc(p.sub)}</i></div>`; }).join("")}</div>
+<div class="chartbox"><div class="plot">
+ ${[1,2,3,4,5].map(v => `<div class="grid" style="top:${yPct(v)}%"></div><span class="ylab" style="top:calc(${yPct(v)}% - 6px)">${v}</span>`).join("")}
+ ${P.map((p, i) => momOf(p) ? `<div class="moi-band" style="left:${i/W*100}%;width:${100/W}%"></div>` : "").join("")}
+ <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+  <polyline points="${pts(0)}" fill="none" stroke="var(--asis)" stroke-width="2" stroke-dasharray="5 4" vector-effect="non-scaling-stroke"/>
+  <polyline points="${pts(1)}" fill="none" stroke="var(--customer)" stroke-width="3" vector-effect="non-scaling-stroke"/>
+ </svg>
+ ${P.map((p, i) => `<div class="dot a" style="left:${xPct(i)}%;top:${yPct(p.emo[0])}%"></div><div class="dot t" style="left:${xPct(i)}%;top:${yPct(p.emo[1])}%"></div>`).join("")}
+</div></div>
+<div class="legend" style="margin-top:10px"><span><svg width="26" height="6"><line x1="0" y1="3" x2="26" y2="3" stroke="var(--asis)" stroke-width="2" stroke-dasharray="5 4"/></svg> as-is</span><span><svg width="26" height="6"><line x1="0" y1="3" x2="26" y2="3" stroke="var(--customer)" stroke-width="3"/></svg> to-be</span><span>Team estimates on a 1–5 scale, not measured.</span></div>`;
+
+const slides = [
+ // 1
+ `<section class="slide title"><div class="eyebrow">P11a · To-Be Journey · Team 7 · Intermediate presentation</div>
+  <h1>One room, two services: say it once, signal it softly.</h1>
+  <p class="big">Common Coffee &amp; Cocktails · Doraville, GA</p></section>`,
+
+ // 2
+ `<section class="slide wide"><div class="eyebrow">Problem / opportunity</div>
+  <h2>The shop runs two services in one room, and nothing tells customers or staff how it changes from one to the other.</h2>
+  <div class="body"><div class="cols">
+   <div class="stat"><b>7</b><span>gaps between the published system and the one we observed (C1–C7)</span></div>
+   <div class="stat"><b>4</b><span>channels, four different closing times</span></div>
+   <div class="stat"><b>0</b><span>channels that state when “night” begins</span></div>
+   <div class="stat"><b>3 + 1</b><span>interviews and one 5-hour observation, plus 39 coded secondary items</span></div>
+  </div>
+  <p class="small" style="margin-top:14px;max-width:70ch">No evening customer and no owner has been interviewed. Alex's journey rests on a general daytime interview and public reviews, not on a student.</p></div></section>`,
+
+ // 3
+ `<section class="slide"><div class="eyebrow">Proposed concepts</div>
+  <h2>Here is our direction, through a, b and c.</h2>
+  <div class="body"><div class="concepts">${TB.concepts.map(c => `<article class="ccard"><div class="k">Concept ${c.k}</div><h3>${esc(c.title)}</h3><p>${esc(c.body)}</p><div class="row">${gaps(c.gaps)} ${types(c.types)}</div></article>`).join("")}</div></div></section>`,
+
+ // 4
+ `<section class="slide wide"><div class="eyebrow">To-be journey · Alex, the Study Visitor</div>
+  <h2>The whole visit, before to after, and where the feeling changes.</h2>
+  <div class="body">${chart}<p class="small" style="margin-top:6px">Numbered phases are the moments of impact. Full map with pain points, backstage and other providers: <a href="tobe.html">tobe.html</a>.</p></div></section>`,
+
+ // 5
+ `<section class="slide wide mini"><div class="eyebrow">Moments of impact</div>
+  <h2>Four moments carry most of the change.</h2>
+  <div class="body"><div class="moments">${TB.moments.map(m => `<article class="mcard"><div class="row"><span class="num" style="position:static;width:26px;height:26px;border-radius:50%;background:var(--brass);color:#fff;display:grid;place-items:center;font-size:13px">${m.n}</span>${status(m.status)}</div><h3>${esc(m.title)}</h3><p class="shift" style="font-size:15px">${esc(m.shift)}</p><div class="row">${gaps(m.gaps)} ${codes(m.ev)}</div></article>`).join("")}</div></div></section>`,
+
+ // 6
+ `<section class="slide"><div class="eyebrow">What we are least sure of</div>
+  <h2>Where this could be wrong.</h2>
+  <div class="body"><div class="risks">${TB.risks.map(r => `<div class="risk"><b>${esc(r.t)}</b><span class="small">${esc(r.d)}</span> <span class="chip ${r.basis === "evidence" ? "cited" : "inferred"}">${r.basis}</span></div>`).join("")}</div></div></section>`,
+
+ // 7
+ `<section class="slide"><div class="eyebrow">Next</div>
+  <h2>Test the moments before committing to any fix.</h2>
+  <div class="body"><p class="big">Moment 3 is the least certain, and moment 2 has the clearest tension. The workshop design pack stages both, and a short customer interview with a daytime student would settle the question under Alex.</p>
+  <p class="small" style="margin-top:16px"><a href="workshop.html">Workshop design pack</a> · <a href="tobe.html">Full to-be journey map</a> · <a href="journey.html">As-is journey skeleton</a></p></div></section>`
+];
+
+document.getElementById("deck").innerHTML = slides.map((s, i) => s.replace(/<\/section>$/, `<div class="num">${i + 1} / ${slides.length}</div></section>`)).join("");
+
+const els = () => [...document.querySelectorAll(".slide")];
+const cur = () => { const y = scrollY + innerHeight / 2; return Math.max(0, els().findIndex(e => e.offsetTop + e.offsetHeight > y)); };
+addEventListener("keydown", e => {
+  const go = d => { e.preventDefault(); const t = els()[Math.min(els().length - 1, Math.max(0, cur() + d))]; scrollTo({top: t.offsetTop}); };
+  if (["ArrowRight","ArrowDown","PageDown"," "].includes(e.key)) go(1);
+  if (["ArrowLeft","ArrowUp","PageUp"].includes(e.key)) go(-1);
+});
+</script>
+</body>
+</html>
