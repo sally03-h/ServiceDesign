@@ -17,6 +17,8 @@ html{scroll-snap-type:y mandatory; scroll-behavior:smooth}
 .slide .big{font-family:"Newsreader",serif; font-size:clamp(20px,2.4vw,30px); line-height:1.35; max-width:34ch}
 .slide .body{max-width:1100px}
 .num{position:absolute; right:3vw; bottom:3vh; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3)}
+.back{position:fixed; left:14px; top:10px; z-index:5; font-family:"IBM Plex Mono",monospace; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-2); text-decoration:none; background:var(--chrome); padding:4px 10px; border:1px solid var(--rule); border-radius:999px}
+.back:hover{color:var(--brass-deep)}
 .hint{position:fixed; right:14px; top:10px; font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--ink-3); z-index:5}
 .title h1{font-size:clamp(34px,5.4vw,68px); max-width:16ch; line-height:1.04; margin-bottom:16px}
 .cols{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-top:6px}
@@ -39,10 +41,11 @@ html{scroll-snap-type:y mandatory; scroll-behavior:smooth}
 .chartbox .dot.t{background:var(--customer); border:2px solid var(--card); box-shadow:0 0 0 1px var(--customer)}
 .chartbox .moi-band{position:absolute; top:0; bottom:0; background:var(--brass-wash)}
 .mini .mcard{padding:14px}
-@media print{.slide{min-height:auto; height:100vh; page-break-after:always} .hint{display:none} html{scroll-snap-type:none}}
+@media print{.slide{min-height:auto; height:100vh; page-break-after:always} .hint,.back{display:none} html{scroll-snap-type:none}}
 </style>
 </head>
 <body>
+<a class="back" href="tobe.html">&larr; back to journey map</a>
 <div class="hint">← → or space to move · print to PDF for handouts</div>
 <main id="deck"></main>
 
